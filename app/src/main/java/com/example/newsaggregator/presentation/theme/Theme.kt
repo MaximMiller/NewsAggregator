@@ -1,4 +1,4 @@
-package com.example.newsaggregator.ui.theme
+package com.example.newsaggregator.presentation.theme
 
 import android.app.Activity
 import android.os.Build
