@@ -1,4 +1,4 @@
-```markdown
+
 # Структура проекта com.example.newsaggregator
 
 ```
@@ -51,9 +51,8 @@ com.example.newsaggregator/
 │   ├── Extensions.kt
 │   └── Constants.kt
 └── NewsApp.kt
-```
-```
 
+```
 
 ## Подробное описание структуры
 
