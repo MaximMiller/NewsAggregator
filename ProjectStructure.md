@@ -3,147 +3,170 @@
 
 ```
 com.example.newsaggregator/
-├── data/
-│   ├── local/
-│   │   ├── dao/
-│   │   │   └── FavoritesDao.kt
-│   │   ├── entity/
-│   │   │   └── FavoriteArticle.kt
-│   │   └── AppDatabase.kt
-│   ├── remote/
-│   │   ├── api/
-│   │   │   └── NewsApiService.kt
-│   │   ├── model/
-│   │   │   ├── Article.kt
-│   │   │   ├── NewsResponse.kt
-│   │   │   └── Source.kt
-│   │   └── paging/
-│   │       └── NewsPagingSource.kt
-│   └── repository/
-│       └── NewsRepository.kt
-├── di/
-│   ├── NetworkModule.kt
-│   ├── AppModule.kt
-│   └── DatabaseModule.kt
-├── domain/
-│   └── model/
-│       └── NewsState.kt
-├── presentation/
-│   ├── components/
-│   │   ├── NewsItem.kt
-│   │   ├── LoadingItem.kt
-│   │   └── ErrorItem.kt
-│   ├── screen/
-│   │   ├── newslist/
-│   │   │   └── NewsListScreen.kt
-│   │   ├── newsdetail/
-│   │   │   └── NewsDetailScreen.kt
-│   │   └── favorites/
-│   │       └── FavoritesScreen.kt
+├── core/
+│   ├── di/
+│   │   ├── NetworkModule.kt
+│   │   ├── DatabaseModule.kt
+│   │   └── ActionModule.kt
 │   ├── navigation/
-│   │   ├── NavGraph.kt
-│   │   └── Destinations.kt
-│   └── viewmodel/
-│       ├── NewsViewModel.kt
-│       ├── FavoritesViewModel.kt
-│       └── SearchViewModel.kt
-├── util/
-│   ├── Extensions.kt
-│   └── Constants.kt
-└── NewsApp.kt
-
+│   │   └── NavigationPrimitives.kt
+│   └── database/
+│       └── AppDatabase.kt
+├── features/
+│   ├── newsfeed/
+│   │   ├── data/
+│   │   │   ├── local/
+│   │   │   │   ├── dao/
+│   │   │   │   │   └── NewsFeedDao.kt
+│   │   │   │   └── entity/
+│   │   │   │       └── NewsFeedEntity.kt
+│   │   │   ├── remote/
+│   │   │   │   ├── api/
+│   │   │   │   │   └── NewsFeedApi.kt
+│   │   │   │   └── dto/
+│   │   │   │       ├── NewsFeedResponseDto.kt
+│   │   │   │       └── ArticleDto.kt
+│   │   │   └── action/
+│   │   │       ├── FetchHeadlinesActionImpl.kt
+│   │   │       └── SearchNewsActionImpl.kt
+│   │   ├── domain/
+│   │   │   ├── model/
+│   │   │   │   └── NewsFeedItem.kt
+│   │   │   ├── action/
+│   │   │   │   ├── FetchHeadlinesAction.kt
+│   │   │   │   └── SearchNewsAction.kt
+│   │   │   └── interactor/
+│   │   │       └── NewsFeedInteractor.kt
+│   │   └── presentation/
+│   │       ├── screen/
+│   │       │   ├── NewsFeedScreen.kt
+│   │       │   └── state/
+│   │       │       └── NewsFeedState.kt
+│   │       ├── component/
+│   │       │   ├── NewsFeedCardCell.kt
+│   │       │   ├── NewsFeedLoadingCell.kt
+│   │       │   └── NewsFeedErrorCell.kt
+│   │       ├── viewmodel/
+│   │       │   └── NewsFeedViewModel.kt
+│   │       └── router/
+│   │           └── NewsFeedRouter.kt
+│   └── favorites/
+│       ├── data/
+│       │   ├── local/
+│       │   │   ├── dao/
+│       │   │   │   └── FavoritesDao.kt
+│       │   │   └── entity/
+│       │   │       └── FavoriteEntity.kt
+│       │   └── action/
+│       │       ├── SaveFavoriteActionImpl.kt
+│       │       └── LoadFavoritesActionImpl.kt
+│       ├── domain/
+│       │   ├── model/
+│       │   │   └── FavoriteItem.kt
+│       │   ├── action/
+│       │   │   ├── SaveFavoriteAction.kt
+│       │   │   └── LoadFavoritesAction.kt
+│       │   └── interactor/
+│       │       └── FavoritesInteractor.kt
+│       └── presentation/
+│           ├── screen/
+│           │   ├── FavoritesScreen.kt
+│           │   └── state/
+│           │       └── FavoritesState.kt
+│           ├── component/
+│           │   └── FavoriteItemCell.kt
+│           ├── viewmodel/
+│           │   └── FavoritesViewModel.kt
+│           └── router/
+│               └── FavoritesRouter.kt
+├── resources/
+│   ├── Images.kt
+│   └── Strings.kt
+└── App.kt
 ```
 
 ## Подробное описание структуры
 
-### 1. Data Layer
+### 1. Core Module
 
-**Локальные данные (Room)**
-- `local/dao/FavoritesDao.kt` - Интерфейс доступа к избранным новостям
-- `local/entity/FavoriteArticle.kt` - Entity для Room
-- `local/AppDatabase.kt` - База данных Room
-
-**Удаленные данные (Retrofit)**
-- `remote/api/NewsApiService.kt` - Retrofit интерфейс для NewsAPI
-- `remote/model/` - DTO модели:
-    - `ArticleDto.kt`
-    - `NewsResponseDto.kt`
-    - `SourceDto.kt`
-- `remote/paging/NewsPagingSource.kt` - PagingSource для пагинации
-
-**Репозиторий**
-- `repository/NewsRepositoryImpl.kt` - Реализация репозитория
-
-### 2. DI Layer (Dagger/Hilt)
-- `NetworkModule.kt` - Настройка сетевых компонентов
-- `DatabaseModule.kt` - Настройка базы данных
-- `RepositoryModule.kt` - Предоставление репозиториев
-
-### 3. Domain Layer
-**Модели**
-- `model/Article.kt` - Доменная модель статьи
-- `model/NewsState.kt` - Состояния UI
-- `model/Source.kt` - Доменная модель источника
-
-**Репозитории**
-- `repository/NewsRepository.kt` - Интерфейс репозитория
-
-### 4. Presentation Layer
-
-**UI компоненты**
-- `components/`
-    - `NewsCard.kt` - Карточка новости
-    - `LoadingView.kt` - Индикатор загрузки
-    - `ErrorView.kt` - Сообщение об ошибке
-    - `CategoryChip.kt` - Чип категории
-
-**Экраны**
-- `screens/`
-    - `home/`
-        - `HomeScreen.kt` - Главный экран
-        - `HomeViewModel.kt` - VM для главного экрана
-    - `details/`
-        - `DetailsScreen.kt` - Детали новости
-        - `DetailsViewModel.kt` - VM для деталей
-    - `search/`
-        - `SearchScreen.kt` - Поиск новостей
-        - `SearchViewModel.kt` - VM для поиска
-    - `favorites/`
-        - `FavoritesScreen.kt` - Избранные новости
-        - `FavoritesViewModel.kt` - VM для избранного
+**DI (Dagger/Hilt)**
+- `di/NetworkModule.kt` - Настройка Retrofit, OkHttp и API сервисов
+- `di/DatabaseModule.kt` - Настройка Room Database и DAO
+- `di/ActionModule.kt` - Биндинги интерфейсов Action к их реализациям
 
 **Навигация**
-- `navigation/`
-    - `NewsNavHost.kt` - Граф навигации
-    - `Destinations.kt` - Маршруты
-    - `BottomNavBar.kt` - Нижняя панель навигации
+- `navigation/NavigationPrimitives.kt` - Базовые маршруты и граф навигации
 
-**Тема**
-- `theme/`
-    - `Colors.kt` - Цвета приложения
-    - `Typography.kt` - Типографика
-    - `Theme.kt` - Тема Compose
+**База данных**
+- `database/AppDatabase.kt` - Главный класс базы данных Room
 
-### 5. Корневой уровень
-- `App.kt` - Главный класс приложения с `@HiltAndroidApp`
+### 2. Feature Modules
 
-## Ресурсы (res/)
+#### feature: newsfeed
 
-```
-res/
-├── drawable/
-├── mipmap/
-├── values/
-│ ├── colors.xml
-│ ├── strings.xml
-│ ├── themes.xml
-│ └── dimens.xml
-└── font/
+**Data Layer**
+- `data/local/`
+    - `dao/NewsFeedDao.kt` - Интерфейс Room для локального кэша
+    - `entity/NewsFeedEntity.kt` - Сущности БД
+- `data/remote/`
+    - `api/NewsFeedApi.kt` - Retrofit интерфейсы
+    - `dto/` - Сетевые модели:
+        - `NewsFeedResponseDto.kt`
+        - `ArticleDto.kt`
+- `data/action/` - Реализации Action:
+    - `FetchHeadlinesActionImpl.kt`
+    - `SearchNewsActionImpl.kt`
 
-```
+**Domain Layer**
+- `domain/model/NewsFeedItem.kt` - Доменная модель новости
+- `domain/action/` - Интерфейсы действий:
+    - `FetchHeadlinesAction.kt`
+    - `SearchNewsAction.kt`
+- `domain/interactor/NewsFeedInteractor.kt` - Бизнес-логика работы с лентой новостей
 
-## Конфигурационные файлы
-- `build.gradle (app)` - Основные зависимости
-- `build.gradle (project)` - Настройки проекта
-- `proguard-rules.pro` - Правила обфускации
-- `AndroidManifest.xml` - Манифест приложения
+**Presentation Layer**
+- `presentation/screen/`
+    - `NewsFeedScreen.kt` - Основной экран ленты
+    - `state/NewsFeedState.kt` - Состояния UI экрана
+- `presentation/component/` - UI компоненты:
+    - `NewsFeedCardCell.kt` - Карточка новости
+    - `NewsFeedLoadingCell.kt` - Индикатор загрузки
+    - `NewsFeedErrorCell.kt` - Блок ошибок
+- `presentation/viewmodel/NewsFeedViewModel.kt` - VM для экрана
+- `presentation/router/NewsFeedRouter.kt` - Навигация фичи
+
+#### feature: favorites
+
+**Data Layer**
+- `data/local/`
+    - `dao/FavoritesDao.kt` - Доступ к избранному
+    - `entity/FavoriteEntity.kt` - Сущности БД
+- `data/action/` - Реализации:
+    - `SaveFavoriteActionImpl.kt`
+    - `LoadFavoritesActionImpl.kt`
+
+**Domain Layer**
+- `domain/model/FavoriteItem.kt` - Доменная модель избранного
+- `domain/action/` - Интерфейсы:
+    - `SaveFavoriteAction.kt`
+    - `LoadFavoritesAction.kt`
+- `domain/interactor/FavoritesInteractor.kt` - Логика работы с избранным
+
+**Presentation Layer**
+- `presentation/screen/`
+    - `FavoritesScreen.kt` - Экран избранного
+    - `state/FavoritesState.kt` - UI состояния
+- `presentation/component/FavoriteItemCell.kt` - Элемент списка
+- `presentation/viewmodel/FavoritesViewModel.kt` - VM для экрана
+- `presentation/router/FavoritesRouter.kt` - Навигация
+
+### 3. Resources Module
+
+**Ресурсы приложения**
+- `resources/Images.kt` - Централизованное хранение изображений:
+  ```kotlin
+  object Images {
+      val NewsPlaceholder = painterResource(R.drawable.news_placeholder)
+      val FavoriteFilled = painterResource(R.drawable.ic_favorite_filled)
+  }
+  ```
