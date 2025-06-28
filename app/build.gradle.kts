@@ -1,7 +1,19 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+}
+
+fun getNewsApiKey(): String {
+    val properties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.inputStream())
+    }
+    return properties.getProperty("NEWS_API_KEY") ?: "\"\""
 }
 
 android {
@@ -56,4 +68,42 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Compose
+    implementation (libs.androidx.activity.compose)
+    implementation (libs.ui)
+    implementation (libs.material3)
+    implementation (libs.ui.tooling.preview)
+    implementation (libs.lifecycle.viewmodel.compose)
+    implementation (libs.androidx.navigation.compose)
+
+    // Room
+    implementation (libs.androidx.room.runtime)
+    implementation(libs.room.ktx)
+    ksp (libs.androidx.room.compiler)
+
+    // Retrofit
+    implementation (libs.retrofit2.retrofit)
+    implementation (libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
+    // Coroutines
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+
+    // Dagger Hilt
+    implementation (libs.hilt.android)
+    ksp (libs.hilt.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
+
+    // Paging
+    implementation (libs.androidx.paging.runtime.ktx)
+    implementation (libs.androidx.paging.compose)
+
+    // Coil
+    implementation (libs.coil.compose)
+
+    // Other
+    implementation (libs.androidx.core.ktx.v1120)
+    implementation (libs.androidx.lifecycle.runtime.ktx.v262)
 }
