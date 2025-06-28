@@ -13,43 +13,49 @@ com.example.newsaggregator/
 │   └── database/
 │       └── AppDatabase.kt
 ├── features/
-│   ├── newsfeed/
+│   ├── newsfeed/                     
 │   │   ├── data/
 │   │   │   ├── local/
 │   │   │   │   ├── dao/
-│   │   │   │   │   └── NewsFeedDao.kt
+│   │   │   │   │   └── NewsDao.kt     
 │   │   │   │   └── entity/
-│   │   │   │       └── NewsFeedEntity.kt
+│   │   │   │       └── NewsEntity.kt 
 │   │   │   ├── remote/
 │   │   │   │   ├── api/
-│   │   │   │   │   └── NewsFeedApi.kt
+│   │   │   │   │   └── NewsApi.kt     
 │   │   │   │   └── dto/
-│   │   │   │       ├── NewsFeedResponseDto.kt
+│   │   │   │       ├── NewsResponseDto.kt
 │   │   │   │       └── ArticleDto.kt
 │   │   │   └── action/
 │   │   │       ├── FetchHeadlinesActionImpl.kt
 │   │   │       └── SearchNewsActionImpl.kt
 │   │   ├── domain/
 │   │   │   ├── model/
-│   │   │   │   └── NewsFeedItem.kt
+│   │   │   │   └── NewsItem.kt        
 │   │   │   ├── action/
 │   │   │   │   ├── FetchHeadlinesAction.kt
 │   │   │   │   └── SearchNewsAction.kt
 │   │   │   └── interactor/
-│   │   │       └── NewsFeedInteractor.kt
+│   │   │       └── NewsInteractor.kt 
 │   │   └── presentation/
 │   │       ├── screen/
-│   │       │   ├── NewsFeedScreen.kt
-│   │       │   └── state/
-│   │       │       └── NewsFeedState.kt
+│   │       │   ├── feed/             
+│   │       │   │   ├── NewsFeedScreen.kt
+│   │       │   │   └── state/
+│   │       │   │       └── NewsFeedState.kt
+│   │       │   └── details/          
+│   │       │       ├── NewsDetailsScreen.kt
+│   │       │       └── state/
+│   │       │           └── NewsDetailsState.kt
 │   │       ├── component/
-│   │       │   ├── NewsFeedCardCell.kt
-│   │       │   ├── NewsFeedLoadingCell.kt
-│   │       │   └── NewsFeedErrorCell.kt
+│   │       │   ├── NewsCardCell.kt   
+│   │       │   ├── LoadingCell.kt     
+│   │       │   └── ErrorCell.kt       
 │   │       ├── viewmodel/
-│   │       │   └── NewsFeedViewModel.kt
+│   │       │   ├── NewsFeedViewModel.kt
+│   │       │   └── NewsDetailsViewModel.kt 
 │   │       └── router/
-│   │           └── NewsFeedRouter.kt
+│   │           └── NewsRouter.kt      
 │   └── favorites/
 │       ├── data/
 │       │   ├── local/
@@ -106,10 +112,10 @@ com.example.newsaggregator/
 
 **Data Layer**
 - `data/local/`
-    - `dao/NewsFeedDao.kt` - Интерфейс Room для локального кэша
-    - `entity/NewsFeedEntity.kt` - Сущности БД
+    - `dao/NewsDao.kt` - Интерфейс Room для локального кэша
+    - `entity/NewsEntity.kt` - Сущности БД
 - `data/remote/`
-    - `api/NewsFeedApi.kt` - Retrofit интерфейсы
+    - `api/NewsApi.kt` - Retrofit интерфейсы
     - `dto/` - Сетевые модели:
         - `NewsFeedResponseDto.kt`
         - `ArticleDto.kt`
@@ -118,22 +124,28 @@ com.example.newsaggregator/
     - `SearchNewsActionImpl.kt`
 
 **Domain Layer**
-- `domain/model/NewsFeedItem.kt` - Доменная модель новости
+- `domain/model/NewsItem.kt` - Доменная модель новости
 - `domain/action/` - Интерфейсы действий:
     - `FetchHeadlinesAction.kt`
     - `SearchNewsAction.kt`
-- `domain/interactor/NewsFeedInteractor.kt` - Бизнес-логика работы с лентой новостей
+- `domain/interactor/NewsInteractor.kt` - Бизнес-логика работы с лентой новостей
 
 **Presentation Layer**
-- `presentation/screen/`
-    - `NewsFeedScreen.kt` - Основной экран ленты
-    - `state/NewsFeedState.kt` - Состояния UI экрана
+- `presentation/`
+   - `screen/`
+         - `feed/` - Подраздел для ленты новостей
+             - `NewsFeedScreen.kt` - Основной экран ленты
+             - `state/NewsFeedState.kt` - Состояния UI экрана ленты
+         - `details/` -  Подраздел для деталей
+             - `NewsDetailsScreen.kt` - Экран деталей новости
+             - `state/NewsDetailsState.kt` - Состояния UI экрана деталей 
 - `presentation/component/` - UI компоненты:
-    - `NewsFeedCardCell.kt` - Карточка новости
-    - `NewsFeedLoadingCell.kt` - Индикатор загрузки
-    - `NewsFeedErrorCell.kt` - Блок ошибок
-- `presentation/viewmodel/NewsFeedViewModel.kt` - VM для экрана
-- `presentation/router/NewsFeedRouter.kt` - Навигация фичи
+  - `NewsCardCell.kt` - Карточка новости
+  - `LoadingCell.kt` - Индикатор загрузки
+  - `ErrorCell.kt` - Блок ошибок
+- `presentation/viewmodel/NewsFeedViewModel.kt` - VM для экрана ленты
+- `presentation/viewmodel/NewsDetailsViewModel.kt` - VM для деталей
+- `presentation/router/NewsRouter.kt` - Навигация фичи
 
 #### feature: favorites
 
