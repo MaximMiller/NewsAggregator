@@ -10,10 +10,12 @@ plugins {
 fun getNewsApiKey(): String {
     val properties = Properties()
     val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        properties.load(localPropertiesFile.inputStream())
+    if (!localPropertiesFile.exists()) {
+        throw GradleException("Файл local.properties не найден! Добавьте NEWS_API_KEY.")
     }
-    return properties.getProperty("NEWS_API_KEY") ?: "\"\""
+    localPropertiesFile.inputStream().use { properties.load(it) }
+    return properties.getProperty("NEWS_API_KEY")
+        ?: throw GradleException("NEWS_API_KEY не задан в local.properties!")
 }
 
 android {
@@ -27,6 +29,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "NEWS_API_KEY", "\"${getNewsApiKey()}\"")
+        buildConfigField("String", "NEWS_API_BASE_URL", "\"https://newsapi.org/v2/\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -48,6 +52,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -70,40 +75,40 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Compose
-    implementation (libs.androidx.activity.compose)
-    implementation (libs.ui)
-    implementation (libs.material3)
-    implementation (libs.ui.tooling.preview)
-    implementation (libs.lifecycle.viewmodel.compose)
-    implementation (libs.androidx.navigation.compose)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.ui)
+    implementation(libs.material3)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
 
     // Room
-    implementation (libs.androidx.room.runtime)
+    implementation(libs.androidx.room.runtime)
     implementation(libs.room.ktx)
-    ksp (libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     // Retrofit
-    implementation (libs.retrofit2.retrofit)
-    implementation (libs.converter.gson)
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
 
     // Coroutines
-    implementation (libs.kotlinx.coroutines.core)
-    implementation (libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Dagger Hilt
-    implementation (libs.hilt.android)
-    ksp (libs.hilt.compiler)
-    implementation (libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Paging
-    implementation (libs.androidx.paging.runtime.ktx)
-    implementation (libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
 
     // Coil
-    implementation (libs.coil.compose)
+    implementation(libs.coil.compose)
 
     // Other
-    implementation (libs.androidx.core.ktx.v1120)
-    implementation (libs.androidx.lifecycle.runtime.ktx.v262)
+    implementation(libs.androidx.core.ktx.v1120)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v262)
 }
