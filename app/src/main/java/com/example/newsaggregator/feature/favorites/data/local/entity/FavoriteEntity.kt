@@ -15,7 +15,11 @@ import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
         childColumns = ["news_url"],
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index("news_url", unique = true)]
+    indices = [
+        Index("news_url", unique = true),
+        Index("saved_at")
+
+    ]
 )
 data class FavoriteEntity(
     @PrimaryKey(autoGenerate = true)

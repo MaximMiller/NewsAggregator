@@ -2,9 +2,16 @@ package com.example.newsaggregator.feature.newsfeed.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "news")
+@Entity(
+    tableName = "news",
+    indices = [
+        Index(value = ["published_at"], name = "idx_news_published_at"),
+        Index(value = ["is_favorite"], name = "idx_news_is_favorite")
+    ]
+)
 data class NewsEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "url") val url: String,

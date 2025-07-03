@@ -12,7 +12,12 @@ interface FavoritesDao {
     @Insert
     suspend fun addFavorite(favorite: FavoriteEntity)
 
-    @Query("SELECT news.* FROM news INNER JOIN favorites ON news.url = favorites.news_url ORDER BY favorites.saved_at DESC")
+    @Query("""
+        SELECT news.* 
+        FROM news 
+        INNER JOIN favorites ON news.url = favorites.news_url
+        ORDER BY favorites.saved_at DESC
+    """)
     fun getFavoritesWithNews(): Flow<List<NewsEntity>>
 
     @Query("DELETE FROM favorites WHERE news_url = :newsUrl")
