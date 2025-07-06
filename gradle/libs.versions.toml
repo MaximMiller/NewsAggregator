@@ -5,13 +5,11 @@ converterGson = "2.9.0"
 coreKtxVersion = "1.12.0"
 hiltCompiler = "2.48.1"
 hiltNavigationCompose = "1.2.0"
-kotlin = "1.9.0"
-composePlugin = "1.5.0"
-coreKtx = "1.10.1"
+kotlin = "1.9.10"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-kotlinxCoroutinesAndroid = "1.10.2"
+kotlinxCoroutinesAndroid = "1.7.3"
 kotlinxCoroutinesCore = "1.7.3"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
@@ -30,7 +28,6 @@ ui = "1.5.4"
 uiToolingPreview = "1.5.4"
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-ktx-v1120 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-runtime-ktx-v262 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
@@ -69,6 +66,5 @@ ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", versio
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.compose", version.ref = "composePlugin" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltCompiler" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-
