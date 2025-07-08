@@ -23,6 +23,9 @@ data class NewsEntity(
     @ColumnInfo(name = "url_to_image") val urlToImage: String?,
     @ColumnInfo(name = "published_at") val publishedAt: String,
     @ColumnInfo(name = "content") val content: String?,
+    @ColumnInfo(name = "feed_type") val feedType: String,
+    @ColumnInfo(name = "page") val page: Int,
+    @ColumnInfo(name = "search_query") val searchQuery: String?,
 
     @ColumnInfo(name = "is_favorite", defaultValue = "0")
     val isFavorite: Boolean = false

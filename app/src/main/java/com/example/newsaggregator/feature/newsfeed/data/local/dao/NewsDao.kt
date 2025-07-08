@@ -20,4 +20,7 @@ interface NewsDao {
 
     @Query("DELETE FROM news WHERE is_favorite = 0")
     suspend fun clearNonFavorites()
+
+    @Query("SELECT * FROM news WHERE search_query = :query AND page = :page ORDER BY published_at DESC")
+    suspend fun getBySearchQuery(query: String, page: Int): List<NewsEntity>
 }
