@@ -30,6 +30,16 @@ class SourceMapper @Inject constructor() {
         country = entity.country
     )
 
+    fun domainToEntity(domain: SourceItem): SourceEntity = SourceEntity(
+        id = domain.id,
+        name = domain.name,
+        description = domain.description,
+        category = domain.category,
+        language = domain.language,
+        country = domain.country,
+        lastFetchTime = System.currentTimeMillis()
+    )
+
     private fun generateId(dto: NewsSourceDto): String {
         return "${dto.name?.hashCode() ?: 0}_${dto.url?.hashCode() ?: 0}"
     }

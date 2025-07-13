@@ -6,5 +6,5 @@ interface FetchHeadlinesAction {
     suspend operator fun invoke(
         country: String,
         page: Int
-    ): Result<List<NewsItem>>
+    ): List<NewsItem>
 }

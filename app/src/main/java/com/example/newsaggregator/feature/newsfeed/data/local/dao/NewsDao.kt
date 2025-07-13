@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NewsDao {
@@ -13,7 +12,7 @@ interface NewsDao {
     suspend fun insertAll(news: List<NewsEntity>)
 
     @Query("SELECT * FROM news ORDER BY published_at DESC")
-    fun getAllNews(): Flow<List<NewsEntity>>
+    suspend fun getAllNews(): List<NewsEntity>
 
     @Query("UPDATE news SET is_favorite = :isFavorite WHERE url = :url")
     suspend fun updateFavoriteStatus(url: String, isFavorite: Boolean)

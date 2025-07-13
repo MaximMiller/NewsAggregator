@@ -7,5 +7,5 @@ interface GetSourcesAction {
         category: String?,
         language: String?,
         country: String?
-    ): Result<List<SourceItem>>
+    ): List<SourceItem>
 }

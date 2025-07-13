@@ -6,5 +6,5 @@ interface SearchNewsAction {
     suspend operator fun invoke(
         query: String,
         page: Int
-    ): Result<List<NewsItem>>
+    ): List<NewsItem>
 }
