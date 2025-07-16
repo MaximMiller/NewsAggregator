@@ -7,55 +7,85 @@ com.example.newsaggregator/
 │   ├── di/
 │   │   ├── NetworkModule.kt
 │   │   ├── DatabaseModule.kt
-│   │   └── ActionModule.kt
+│   │   ├── ActionModule.kt
+│   │   └── CacheModule.kt         
 │   ├── navigation/
 │   │   └── NavigationPrimitives.kt
-│   └── database/
-│       └── AppDatabase.kt
+│   ├── database/
+│   │   └── AppDatabase.kt
+│   └── network/
+│       ├── exceptions/
+│       │   └── ApiException.kt     
+│       └── extensions/
+│           └── ResponseExtensions.kt
 ├── features/
-│   ├── newsfeed/                     
+│   ├── newsfeed/
 │   │   ├── data/
 │   │   │   ├── local/
 │   │   │   │   ├── dao/
-│   │   │   │   │   └── NewsDao.kt     
+│   │   │   │   │   └── NewsDao.kt
 │   │   │   │   └── entity/
-│   │   │   │       └── NewsEntity.kt 
+│   │   │   │       └── NewsEntity.kt
 │   │   │   ├── remote/
 │   │   │   │   ├── api/
-│   │   │   │   │   └── NewsApi.kt     
+│   │   │   │   │   └── NewsApi.kt
 │   │   │   │   └── dto/
+│   │   │   │       ├── ArticleDto.kt
 │   │   │   │       ├── NewsResponseDto.kt
-│   │   │   │       └── ArticleDto.kt
-│   │   │   └── action/
-│   │   │       ├── FetchHeadlinesActionImpl.kt
-│   │   │       └── SearchNewsActionImpl.kt
+│   │   │   │       ├── NewsSourceDto.kt     
+│   │   │   │       ├── SourceDto.kt
+│   │   │   │       └── SourcesResponseDto.kt
+│   │   │   ├── action/             
+│   │   │   │   ├── FetchHeadlinesActionImpl.kt
+│   │   │   │   ├── GetCachedHeadlinesImpl.kt
+│   │   │   │   ├── GetCachedNewsByQueryImpl.kt
+│   │   │   │   ├── GetCachedSourcesByFiltersImpl.kt
+│   │   │   │   ├── GetSourcesActionImpl.kt
+│   │   │   │   ├── SaveNewsToCacheImpl.kt
+│   │   │   │   ├── SaveSourcesToCacheImpl.kt
+│   │   │   │   └── SearchNewsActionImpl.kt
+│   │   │   └── mapper/            
+│   │   │       ├── NewsMapper.kt
+│   │   │       └── SourceMapper.kt
 │   │   ├── domain/
 │   │   │   ├── model/
-│   │   │   │   └── NewsItem.kt        
-│   │   │   ├── action/
+│   │   │   │   ├── NewsItem.kt
+│   │   │   │   ├── SourceItem.kt  
+│   │   │   │   └── FeedType.kt     
+│   │   │   ├── action/             
 │   │   │   │   ├── FetchHeadlinesAction.kt
+│   │   │   │   ├── GetCachedHeadlinesAction.kt
+│   │   │   │   ├── GetCachedNewsByQueryAction.kt
+│   │   │   │   ├── GetCachedSourcesByFiltersAction.kt
+│   │   │   │   ├── GetSourcesAction.kt
+│   │   │   │   ├── SaveNewsToCacheAction.kt
+│   │   │   │   ├── SaveSourcesToCacheAction.kt
 │   │   │   │   └── SearchNewsAction.kt
-│   │   │   └── interactor/
-│   │   │       └── NewsInteractor.kt 
+│   │   │   ├── interactor/
+│   │   │   │   └── NewsInteractor.kt
+│   │   │   └── usecase/            
+│   │   │       ├── GetHeadlinesUseCase.kt
+│   │   │       ├── GetSourcesUseCase.kt
+│   │   │       └── SearchNewsUseCase.kt
 │   │   └── presentation/
 │   │       ├── screen/
-│   │       │   ├── feed/             
+│   │       │   ├── feed/
 │   │       │   │   ├── NewsFeedScreen.kt
 │   │       │   │   └── state/
 │   │       │   │       └── NewsFeedState.kt
-│   │       │   └── details/          
+│   │       │   └── details/
 │   │       │       ├── NewsDetailsScreen.kt
 │   │       │       └── state/
 │   │       │           └── NewsDetailsState.kt
 │   │       ├── component/
-│   │       │   ├── NewsCardCell.kt   
-│   │       │   ├── LoadingCell.kt     
-│   │       │   └── ErrorCell.kt       
+│   │       │   ├── NewsCardCell.kt
+│   │       │   ├── LoadingCell.kt
+│   │       │   └── ErrorCell.kt
 │   │       ├── viewmodel/
 │   │       │   ├── NewsFeedViewModel.kt
-│   │       │   └── NewsDetailsViewModel.kt 
+│   │       │   └── NewsDetailsViewModel.kt
 │   │       └── router/
-│   │           └── NewsRouter.kt      
+│   │           └── NewsRouter.kt
 │   └── favorites/
 │       ├── data/
 │       │   ├── local/
@@ -99,12 +129,17 @@ com.example.newsaggregator/
 - `di/NetworkModule.kt` - Настройка Retrofit, OkHttp и API сервисов
 - `di/DatabaseModule.kt` - Настройка Room Database и DAO
 - `di/ActionModule.kt` - Биндинги интерфейсов Action к их реализациям
+- `di/CacheModule.kt` - Управление кэшированием
 
 **Навигация**
 - `navigation/NavigationPrimitives.kt` - Базовые маршруты и граф навигации
 
 **База данных**
 - `database/AppDatabase.kt` - Главный класс базы данных Room
+
+**Сеть**
+- `network/exceptions/ApiException.kt` - Иерархия ошибок
+- `network/extensions/ResponseExtensions.kt` - Утилиты
 
 ### 2. Feature Modules
 
@@ -114,21 +149,29 @@ com.example.newsaggregator/
 - `data/local/`
     - `dao/NewsDao.kt` - Интерфейс Room для локального кэша
     - `entity/NewsEntity.kt` - Сущности БД
+    - `entity/SourceEntity.kt` - Сущности БД
 - `data/remote/`
     - `api/NewsApi.kt` - Retrofit интерфейсы
     - `dto/` - Сетевые модели:
         - `NewsFeedResponseDto.kt`
         - `ArticleDto.kt`
+        - `SourceDto.kt`
 - `data/action/` - Реализации Action:
     - `FetchHeadlinesActionImpl.kt`
     - `SearchNewsActionImpl.kt`
+    -  `GetCachedSourcesImpl.kt`
 
 **Domain Layer**
 - `domain/model/NewsItem.kt` - Доменная модель новости
+- `domain/model/SourceItem.kt` - Доменная модель ресурсов
+- `domain/model/FeedType.kt` - Доменная модель типов ленты
 - `domain/action/` - Интерфейсы действий:
     - `FetchHeadlinesAction.kt`
     - `SearchNewsAction.kt`
-- `domain/interactor/NewsInteractor.kt` - Бизнес-логика работы с лентой новостей
+    - `GetSourcesAction.kt`
+- `domain/usecase/GetHeadlinesUseCase.kt` - Бизнес-логика работы с лентой новостей
+- `domain/usecase/GetSourcesUseCase.kt` - Бизнес-логика работы с ресурсами
+- `domain/usecase/SearchNewsUseCase.kt` - Бизнес-логика работы с поиском
 
 **Presentation Layer**
 - `presentation/`
