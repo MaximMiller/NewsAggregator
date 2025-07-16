@@ -1,11 +1,19 @@
 package com.example.newsaggregator.core.di
 
-import com.example.newsaggregator.feature.newsfeed.data.local.cache.CacheNewsAction
-import com.example.newsaggregator.feature.newsfeed.data.local.cache.CacheSourcesAction
+import com.example.newsaggregator.feature.newsfeed.data.action.GetCachedHeadlinesImpl
+import com.example.newsaggregator.feature.newsfeed.data.action.GetCachedNewsByQueryImpl
+import com.example.newsaggregator.feature.newsfeed.data.action.GetCachedSourcesByFiltersImpl
+import com.example.newsaggregator.feature.newsfeed.data.action.SaveNewsToCacheImpl
+import com.example.newsaggregator.feature.newsfeed.data.action.SaveSourcesToCacheImpl
 import com.example.newsaggregator.feature.newsfeed.data.local.dao.NewsDao
 import com.example.newsaggregator.feature.newsfeed.data.local.dao.SourcesDao
 import com.example.newsaggregator.feature.newsfeed.data.mapper.NewsMapper
 import com.example.newsaggregator.feature.newsfeed.data.mapper.SourceMapper
+import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedHeadlinesAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedNewsByQueryAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedSourcesByFiltersAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.SaveNewsToCacheAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.SaveSourcesToCacheAction
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,15 +22,34 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object CacheModule {
-    @Provides
-    fun provideCacheNewsAction(
-        dao: NewsDao,
-        mapper: NewsMapper
-    ): CacheNewsAction = CacheNewsAction(dao, mapper)
 
     @Provides
-    fun provideCacheSourcesAction(
+    fun provideSaveNewsToCacheAction(
+        dao: NewsDao,
+        mapper: NewsMapper
+    ): SaveNewsToCacheAction = SaveNewsToCacheImpl(dao, mapper)
+
+    @Provides
+    fun provideGetCachedNewsByQueryAction(
+        dao: NewsDao,
+        mapper: NewsMapper
+    ): GetCachedNewsByQueryAction = GetCachedNewsByQueryImpl(dao, mapper)
+
+    @Provides
+    fun provideGetCachedHeadlinesAction(
+        dao: NewsDao,
+        mapper: NewsMapper
+    ): GetCachedHeadlinesAction = GetCachedHeadlinesImpl(dao, mapper)
+
+    @Provides
+    fun provideSaveSourcesToCacheAction(
         dao: SourcesDao,
         mapper: SourceMapper
-    ): CacheSourcesAction = CacheSourcesAction(dao, mapper)
+    ): SaveSourcesToCacheAction = SaveSourcesToCacheImpl(dao, mapper)
+
+    @Provides
+    fun provideGetCachedSourcesByFiltersAction(
+        dao: SourcesDao,
+        mapper: SourceMapper
+    ): GetCachedSourcesByFiltersAction = GetCachedSourcesByFiltersImpl(dao, mapper)
 }

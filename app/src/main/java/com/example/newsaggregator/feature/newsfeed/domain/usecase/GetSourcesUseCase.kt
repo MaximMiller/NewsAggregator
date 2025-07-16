@@ -1,14 +1,16 @@
 package com.example.newsaggregator.feature.newsfeed.domain.usecase
 
 import android.util.Log
-import com.example.newsaggregator.feature.newsfeed.data.local.cache.CacheSourcesAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedSourcesByFiltersAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetSourcesAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.SaveSourcesToCacheAction
 import com.example.newsaggregator.feature.newsfeed.domain.model.SourceItem
 import javax.inject.Inject
 
 class GetSourcesUseCase @Inject constructor(
     private val getSourcesAction: GetSourcesAction,
-    private val cacheAction: CacheSourcesAction,
+    private val getFromCache: GetCachedSourcesByFiltersAction,
+    private val saveToCache: SaveSourcesToCacheAction
 ) {
     suspend operator fun invoke(
         category: String? = null,
@@ -17,7 +19,7 @@ class GetSourcesUseCase @Inject constructor(
     ): Result<List<SourceItem>> = runCatching {
         try {
             val sources = getSourcesAction(category, language, country)
-            cacheAction.saveSources(sources)
+            saveToCache(sources)
             sources
         } catch (e: Exception) {
             Log.e(
@@ -25,9 +27,12 @@ class GetSourcesUseCase @Inject constructor(
                 "Error: ${e.message}. Params: category=$category, lang=$language",
                 e
             )
-            cacheAction.getByFilters(category, language, country)
-                .takeIf { it.isNotEmpty() }
-                ?: throw e
+            val cachedSources = getFromCache(category, language, country)
+            if (cachedSources.isNotEmpty()) {
+                cachedSources
+            } else {
+                throw e
+            }
         }
     }
 }

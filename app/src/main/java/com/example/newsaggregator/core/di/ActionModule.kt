@@ -3,8 +3,6 @@ package com.example.newsaggregator.core.di
 import com.example.newsaggregator.feature.newsfeed.data.action.FetchHeadlinesActionImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.GetSourcesActionImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.SearchNewsActionImpl
-import com.example.newsaggregator.feature.newsfeed.data.local.dao.NewsDao
-import com.example.newsaggregator.feature.newsfeed.data.local.dao.SourcesDao
 import com.example.newsaggregator.feature.newsfeed.data.mapper.NewsMapper
 import com.example.newsaggregator.feature.newsfeed.data.mapper.SourceMapper
 import com.example.newsaggregator.feature.newsfeed.data.remote.api.NewsApi
@@ -23,23 +21,20 @@ object ActionModule {
     @Provides
     fun provideFetchHeadlinesAction(
         api: NewsApi,
-        dao: NewsDao,
         mapper: NewsMapper
-    ): FetchHeadlinesAction = FetchHeadlinesActionImpl(api, dao, mapper)
+    ): FetchHeadlinesAction = FetchHeadlinesActionImpl(api, mapper)
 
     @Provides
     fun provideGetSourcesAction(
         api: NewsApi,
-        dao: SourcesDao,
         mapper: SourceMapper
-    ): GetSourcesAction = GetSourcesActionImpl(api, dao, mapper)
+    ): GetSourcesAction = GetSourcesActionImpl(api, mapper)
 
     @Provides
     fun provideSearchNewsAction(
         api: NewsApi,
-        dao: NewsDao,
         mapper: NewsMapper
-    ): SearchNewsAction = SearchNewsActionImpl(api, dao, mapper)
+    ): SearchNewsAction = SearchNewsActionImpl(api, mapper)
 
     @Provides
     fun provideNewsMapper(): NewsMapper = NewsMapper()
