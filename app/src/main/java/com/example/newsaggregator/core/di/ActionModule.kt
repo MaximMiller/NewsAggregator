@@ -1,5 +1,15 @@
 package com.example.newsaggregator.core.di
 
+import com.example.newsaggregator.feature.favorites.data.action.IsFavoriteCheckActionImpl
+import com.example.newsaggregator.feature.favorites.data.action.LoadFavoritesActionImpl
+import com.example.newsaggregator.feature.favorites.data.action.RemoveFavoriteActionImpl
+import com.example.newsaggregator.feature.favorites.data.action.SaveFavoriteActionImpl
+import com.example.newsaggregator.feature.favorites.data.local.dao.FavoritesDao
+import com.example.newsaggregator.feature.favorites.data.mapper.FavoriteMapper
+import com.example.newsaggregator.feature.favorites.domain.action.IsFavoriteCheckAction
+import com.example.newsaggregator.feature.favorites.domain.action.LoadFavoritesAction
+import com.example.newsaggregator.feature.favorites.domain.action.RemoveFavoriteAction
+import com.example.newsaggregator.feature.favorites.domain.action.SaveFavoriteAction
 import com.example.newsaggregator.feature.newsfeed.data.action.FetchHeadlinesActionImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.GetSourcesActionImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.SearchNewsActionImpl
@@ -37,8 +47,33 @@ object ActionModule {
     ): SearchNewsAction = SearchNewsActionImpl(api, mapper)
 
     @Provides
+    fun provideSaveFavoriteAction(
+        favoritesDao: FavoritesDao,
+        mapper: FavoriteMapper
+    ): SaveFavoriteAction = SaveFavoriteActionImpl(favoritesDao, mapper)
+
+    @Provides
+    fun provideRemoveFavoriteAction(
+        favoritesDao: FavoritesDao,
+    ): RemoveFavoriteAction = RemoveFavoriteActionImpl(favoritesDao)
+
+    @Provides
+    fun provideLoadFavoritesAction(
+        favoritesDao: FavoritesDao,
+        newsMapper: NewsMapper
+    ): LoadFavoritesAction = LoadFavoritesActionImpl(favoritesDao, newsMapper)
+
+    @Provides
+    fun provideIsFavoriteCheckAction(
+        favoritesDao: FavoritesDao
+    ): IsFavoriteCheckAction = IsFavoriteCheckActionImpl(favoritesDao)
+
+    @Provides
     fun provideNewsMapper(): NewsMapper = NewsMapper()
 
     @Provides
     fun provideSourceMapper(): SourceMapper = SourceMapper()
+
+    @Provides
+    fun provideFavoriteMapper(): FavoriteMapper = FavoriteMapper()
 }
