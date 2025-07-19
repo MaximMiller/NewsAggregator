@@ -61,8 +61,6 @@ com.example.newsaggregator/
 │   │   │   │   ├── SaveNewsToCacheAction.kt
 │   │   │   │   ├── SaveSourcesToCacheAction.kt
 │   │   │   │   └── SearchNewsAction.kt
-│   │   │   ├── interactor/
-│   │   │   │   └── NewsInteractor.kt
 │   │   │   └── usecase/            
 │   │   │       ├── GetHeadlinesUseCase.kt
 │   │   │       ├── GetSourcesUseCase.kt
@@ -93,17 +91,22 @@ com.example.newsaggregator/
 │       │   │   │   └── FavoritesDao.kt
 │       │   │   └── entity/
 │       │   │       └── FavoriteEntity.kt
+│       │   ├── mapper/             
+│       │   │   └── FavoriteMapper.kt
 │       │   └── action/
 │       │       ├── SaveFavoriteActionImpl.kt
-│       │       └── LoadFavoritesActionImpl.kt
+│       │       ├── LoadFavoritesActionImpl.kt
+│       │       ├── RemoveFavoriteActionImpl.kt  
+│       │       └── IsFavoriteCheckActionImpl.kt 
 │       ├── domain/
-│       │   ├── model/
-│       │   │   └── FavoriteItem.kt
 │       │   ├── action/
 │       │   │   ├── SaveFavoriteAction.kt
-│       │   │   └── LoadFavoritesAction.kt
-│       │   └── interactor/
-│       │       └── FavoritesInteractor.kt
+│       │   │   ├── LoadFavoritesAction.kt
+│       │   │   ├── RemoveFavoriteAction.kt  
+│       │   │   └── IsFavoriteCheckAction.kt 
+│       │   └── usecase/              
+│       │       ├── GetFavoritesUseCase.kt
+│       │       └── ToggleFavoriteUseCase.kt
 │       └── presentation/
 │           ├── screen/
 │           │   ├── FavoritesScreen.kt
@@ -201,11 +204,10 @@ com.example.newsaggregator/
     - `LoadFavoritesActionImpl.kt`
 
 **Domain Layer**
-- `domain/model/FavoriteItem.kt` - Доменная модель избранного
 - `domain/action/` - Интерфейсы:
     - `SaveFavoriteAction.kt`
     - `LoadFavoritesAction.kt`
-- `domain/interactor/FavoritesInteractor.kt` - Логика работы с избранным
+- `domain/usecase/ToggleFavoriteUseCase.kt` - Логика работы с избранным
 
 **Presentation Layer**
 - `presentation/screen/`
