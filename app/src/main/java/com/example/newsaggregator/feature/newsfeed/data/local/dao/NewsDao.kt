@@ -14,9 +14,6 @@ interface NewsDao {
     @Query("SELECT * FROM news ORDER BY published_at DESC")
     suspend fun getAllNews(): List<NewsEntity>
 
-    @Query("UPDATE news SET is_favorite = :isFavorite WHERE url = :url")
-    suspend fun updateFavoriteStatus(url: String, isFavorite: Boolean)
-
     @Query("DELETE FROM news WHERE is_favorite = 0")
     suspend fun clearNonFavorites()
 
