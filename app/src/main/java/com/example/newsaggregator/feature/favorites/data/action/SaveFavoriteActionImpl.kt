@@ -11,6 +11,11 @@ internal class SaveFavoriteActionImpl @Inject constructor(
     private val mapper: FavoriteMapper,
 ) : SaveFavoriteAction {
     override suspend fun invoke(item: NewsItem) {
-        favoritesDao.addFavorite(mapper.domainToEntity(item))
+        favoritesDao.addFavorite(
+            mapper.domainToEntity(
+                item = item,
+                savedAt = System.currentTimeMillis()
+            )
+        )
     }
 }

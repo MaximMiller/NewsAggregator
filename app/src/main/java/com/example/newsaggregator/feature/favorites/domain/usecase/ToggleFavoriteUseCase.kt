@@ -12,8 +12,8 @@ class ToggleFavoriteUseCase @Inject constructor(
     private val isFavoriteCheck: IsFavoriteCheckAction
 ) {
     suspend operator fun invoke(item: NewsItem) {
-        if (isFavoriteCheck(item.id)) {
-            removeAction(item.id)
+        if (isFavoriteCheck(item.url)) {
+            removeAction(item.url)
         } else {
             saveAction(item)
         }

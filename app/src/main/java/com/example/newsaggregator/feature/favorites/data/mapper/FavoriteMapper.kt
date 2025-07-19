@@ -5,10 +5,10 @@ import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 import javax.inject.Inject
 
 class FavoriteMapper @Inject constructor() {
-    fun domainToEntity(item: NewsItem): FavoriteEntity {
+    fun domainToEntity(item: NewsItem, savedAt: Long): FavoriteEntity {
         return FavoriteEntity(
             newsUrl = item.url,
-            savedAt = System.currentTimeMillis()
+            savedAt = savedAt
         )
     }
 }

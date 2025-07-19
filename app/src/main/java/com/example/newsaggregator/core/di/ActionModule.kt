@@ -24,6 +24,20 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * TODO: Реализовать feature-модули для DI (разделение по фичам)
+ *
+ * Планируется:
+ * 1. Создать отдельные модули для каждой фичи
+ * 2. Изучить Dagger Binding для:
+ *    - Упрощения привязки интерфейсов к реализациям
+ *    - Использования Multibinding для коллекций зависимостей
+ *
+ * @see dagger.Binds
+ * @see dagger.multibindings.Multibinds
+ *
+ */
+
 @Module
 @InstallIn(SingletonComponent::class)
 object ActionModule {
