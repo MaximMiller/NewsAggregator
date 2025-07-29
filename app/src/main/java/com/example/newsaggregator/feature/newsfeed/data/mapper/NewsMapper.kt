@@ -36,6 +36,8 @@ class NewsMapper @Inject constructor() {
         imageUrl = entity.urlToImage,
         publishedAt = entity.publishedAt,
         source = entity.sourceName,
+        content = entity.content,
+        author = entity.author,
         isFavorite = entity.isFavorite
     )
 
