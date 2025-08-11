@@ -1,6 +1,7 @@
 package com.example.newsaggregator.feature.newsfeed.presentation.screen.feed
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,24 +10,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.newsaggregator.core.util.ImmutableList
 import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 import com.example.newsaggregator.feature.newsfeed.presentation.component.NewsCardCell
 import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.state.NewsFeedState
 import com.example.newsaggregator.feature.newsfeed.presentation.viewmodel.NewsFeedViewModel
+import androidx.compose.material3.MaterialTheme.typography as typography1
+import androidx.compose.material3.Text as Text1
 
 @Composable
 fun NewsFeedScreen(
@@ -50,7 +57,7 @@ private fun NewsFeedContent(
     onNewsClick: (String) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(title = { Text("Новости") })
+        TopAppBar(title = { Text1("Новости") })
 
         when {
             state.isLoading -> LoadingView()
@@ -65,7 +72,7 @@ private fun NewsFeedContent(
 
 @Composable
 private fun NewsList(
-    news: List<NewsItem>,
+    news: ImmutableList<NewsItem>,
     onNewsClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -99,17 +106,35 @@ private fun EmptyStateView() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("Новости не найдены", style = MaterialTheme.typography.bodyMedium)
+        Text1("Новости не найдены", style = typography1.bodyMedium)
     }
 }
 
 @Composable
 private fun LoadingView() {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorScheme.surface.copy(alpha = 0.9f)),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(64.dp),
+                color = colorScheme.primary,
+                trackColor = colorScheme.surfaceVariant,
+                strokeCap = StrokeCap.Round,
+                strokeWidth = 6.dp
+            )
+            Text1(
+                text = "Загрузка...",
+                style = MaterialTheme.typography.bodyLarge,
+                color = colorScheme.onSurface
+            )
+        }
     }
 }
 
@@ -120,10 +145,75 @@ private fun ErrorView(error: String, onRetry: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = error, color = MaterialTheme.colorScheme.error)
+        Text1(text = error, color = colorScheme.error)
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onRetry) {
-            Text("Повторить")
+            Text1("Повторить")
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun NewsFeedScreenPreview() {
+    MaterialTheme {
+        NewsFeedContent(
+            state = NewsFeedState(
+                newsItems = ImmutableList(
+                    listOf(
+                        NewsItem(
+                            id = "1",
+                            title = "Пример новости 1",
+                            description = "Краткое описание новости 1",
+                            publishedAt = "2023-05-15",
+                            url = "",
+                            imageUrl = null,
+                            source = "source 1",
+                            content = "TODO()",
+                            author = "author 1",
+                            isFavorite = true
+                        ),
+                        NewsItem(
+                            id = "2",
+                            title = "Пример новости 2",
+                            description = "Краткое описание новости 2",
+                            publishedAt = "2023-05-16",
+                            url = "",
+                            imageUrl = null,
+                            source = "source 2",
+                            content = "TODO()",
+                            author = "author 2",
+                            isFavorite = false
+                        )
+                    )
+                )
+            ),
+            onRefresh = {},
+            onNewsClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadingPreview() {
+    MaterialTheme {
+        LoadingView()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ErrorPreview() {
+    MaterialTheme {
+        ErrorView(error = "Ошибка загрузки", onRetry = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmptyPreview() {
+    MaterialTheme {
+        EmptyStateView()
     }
 }

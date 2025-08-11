@@ -2,6 +2,7 @@ package com.example.newsaggregator.feature.newsfeed.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.newsaggregator.core.util.toImmutableList
 import com.example.newsaggregator.feature.newsfeed.domain.usecase.GetHeadlinesUseCase
 import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.state.NewsFeedState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,7 @@ class NewsFeedViewModel @Inject constructor(
                 .onSuccess { news ->
                     _state.update {
                         it.copy(
-                            newsItems = news,
+                            newsItems = news.toImmutableList(),
                             isLoading = false,
                             error = null
                         )
