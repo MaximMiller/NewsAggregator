@@ -10,16 +10,17 @@ data class NewsFeedState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val selectedCountry: String = "us",
-    val selectedCategory: String = "general",
+    val selectedCategory: String = "ALL",
     val categories: ImmutableList<String> = ImmutableList(
         listOf(
+            "ALL",
             "general",
             "business",
             "health",
             "technology",
             "sports",
             "entertainment",
-            "science"
+            "science",
         )
     )
 ) {

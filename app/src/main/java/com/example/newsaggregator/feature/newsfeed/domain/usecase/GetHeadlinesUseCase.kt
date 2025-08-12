@@ -25,7 +25,7 @@ class GetHeadlinesUseCase @Inject constructor(
                 fetchAndCache(country, page)
             } catch (e: Exception) {
                 Log.e(
-                    "GetSourcesUseCase",
+                    "GetHeadlinesUseCase",
                     "Error: ${e.message}. Params: country=$country, page=$page",
                     e
                 )

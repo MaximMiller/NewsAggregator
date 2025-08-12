@@ -52,7 +52,11 @@ class NewsFeedViewModel @Inject constructor(
 
     fun selectCategory(category: String) {
         _state.update { it.copy(selectedCategory = category) }
-        loadHeadlinesByCategory(category)
+        if (category == "ALL") {
+            loadHeadlines()
+        } else {
+            loadHeadlinesByCategory(category)
+        }
     }
 
     private fun loadHeadlinesByCategory(category: String) {
