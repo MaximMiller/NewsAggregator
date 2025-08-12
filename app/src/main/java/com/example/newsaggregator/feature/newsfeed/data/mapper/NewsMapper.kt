@@ -10,8 +10,9 @@ class NewsMapper @Inject constructor() {
     fun dtoToEntity(
         dto: ArticleDto,
         feedType: FeedType,
-        page: Int,
-        searchQuery: String? = null
+        page: Int? = null,
+        searchQuery: String? = null,
+        category: String? = null,
     ): NewsEntity = NewsEntity(
         url = dto.url,
         title = dto.title,
@@ -23,9 +24,10 @@ class NewsMapper @Inject constructor() {
         publishedAt = dto.publishedAt ?: "",
         content = dto.content,
         isFavorite = false,
-        feedType = feedType.name,
-        page = page,
-        searchQuery = searchQuery
+        feedType = feedType,
+        page = page ?: 1,
+        searchQuery = searchQuery,
+        category = category,
     )
 
     fun entityToDomain(entity: NewsEntity): NewsItem = NewsItem(
@@ -36,14 +38,18 @@ class NewsMapper @Inject constructor() {
         imageUrl = entity.urlToImage,
         publishedAt = entity.publishedAt,
         source = entity.sourceName,
-        isFavorite = entity.isFavorite
+        content = entity.content,
+        author = entity.author,
+        isFavorite = entity.isFavorite,
+        category = entity.category
     )
 
     fun domainToEntity(
         domain: NewsItem,
         feedType: FeedType,
-        page: Int,
-        searchQuery: String? = null
+        page: Int? = null,
+        searchQuery: String? = null,
+        category: String? = null,
     ): NewsEntity = NewsEntity(
         url = domain.id,
         title = domain.title,
@@ -54,8 +60,9 @@ class NewsMapper @Inject constructor() {
         urlToImage = domain.imageUrl,
         publishedAt = domain.publishedAt,
         content = null,
-        feedType = feedType.name,
-        page = page,
-        searchQuery = searchQuery
+        feedType = feedType,
+        page = page ?: 1,
+        searchQuery = searchQuery,
+        category = category,
     )
 }

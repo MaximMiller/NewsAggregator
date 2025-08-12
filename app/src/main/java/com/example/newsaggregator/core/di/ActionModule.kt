@@ -17,6 +17,7 @@ import com.example.newsaggregator.feature.newsfeed.data.mapper.NewsMapper
 import com.example.newsaggregator.feature.newsfeed.data.mapper.SourceMapper
 import com.example.newsaggregator.feature.newsfeed.data.remote.api.NewsApi
 import com.example.newsaggregator.feature.newsfeed.domain.action.FetchHeadlinesAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.FetchHeadlinesByCategoryAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetSourcesAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.SearchNewsAction
 import dagger.Module
@@ -47,6 +48,12 @@ object ActionModule {
         api: NewsApi,
         mapper: NewsMapper
     ): FetchHeadlinesAction = FetchHeadlinesActionImpl(api, mapper)
+
+    @Provides
+    fun provideFetchHeadlinesByCategoryAction(
+        api: NewsApi,
+        mapper: NewsMapper
+    ): FetchHeadlinesByCategoryAction = FetchHeadlinesActionImpl(api, mapper)
 
     @Provides
     fun provideGetSourcesAction(
