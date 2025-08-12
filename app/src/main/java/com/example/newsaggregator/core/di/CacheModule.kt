@@ -10,8 +10,10 @@ import com.example.newsaggregator.feature.newsfeed.data.local.dao.SourcesDao
 import com.example.newsaggregator.feature.newsfeed.data.mapper.NewsMapper
 import com.example.newsaggregator.feature.newsfeed.data.mapper.SourceMapper
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedHeadlinesAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedHeadlinesByCategoryAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedNewsByQueryAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedSourcesByFiltersAction
+import com.example.newsaggregator.feature.newsfeed.domain.action.SaveCategoryNewsToCacheAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.SaveNewsToCacheAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.SaveSourcesToCacheAction
 import dagger.Module
@@ -44,6 +46,12 @@ object CacheModule {
     ): SaveNewsToCacheAction = SaveNewsToCacheImpl(dao, mapper)
 
     @Provides
+    fun provideSaveCategoryNewsToCacheAction(
+        dao: NewsDao,
+        mapper: NewsMapper
+    ): SaveCategoryNewsToCacheAction = SaveNewsToCacheImpl(dao, mapper)
+
+    @Provides
     fun provideGetCachedNewsByQueryAction(
         dao: NewsDao,
         mapper: NewsMapper
@@ -54,6 +62,12 @@ object CacheModule {
         dao: NewsDao,
         mapper: NewsMapper
     ): GetCachedHeadlinesAction = GetCachedHeadlinesImpl(dao, mapper)
+
+    @Provides
+    fun provideGetCachedHeadlinesByCategoryAction(
+        dao: NewsDao,
+        mapper: NewsMapper
+    ): GetCachedHeadlinesByCategoryAction = GetCachedHeadlinesImpl(dao, mapper)
 
     @Provides
     fun provideSaveSourcesToCacheAction(

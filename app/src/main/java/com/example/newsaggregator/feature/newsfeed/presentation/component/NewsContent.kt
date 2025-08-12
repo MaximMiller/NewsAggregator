@@ -53,8 +53,9 @@ fun NewsContentPreview() {
                 isFavorite = false,
                 id = "",
                 url = "",
-                imageUrl = null ,
-                content = "Sample News Content"
+                imageUrl = null,
+                content = "Sample News Content",
+                category = null,
             ),
             onFavoriteClick = {}
         )

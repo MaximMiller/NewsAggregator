@@ -11,4 +11,5 @@ data class NewsItem(
     val content: String?,
     val author: String?,
     val isFavorite: Boolean = false,
+    val category: String?,
 )

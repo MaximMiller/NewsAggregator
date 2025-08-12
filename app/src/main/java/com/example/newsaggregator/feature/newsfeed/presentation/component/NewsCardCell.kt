@@ -58,7 +58,8 @@ fun NewsCardCellPreview() {
                 id = "",
                 url = "",
                 imageUrl = null,
-                content = null
+                content = null,
+                category = null,
             ),
             modifier = Modifier.padding(16.dp)
         )

@@ -19,4 +19,7 @@ interface NewsDao {
 
     @Query("SELECT * FROM news WHERE search_query = :query AND page = :page ORDER BY published_at DESC")
     suspend fun getBySearchQuery(query: String, page: Int): List<NewsEntity>
+
+    @Query("SELECT * FROM news WHERE category = :category")
+    suspend fun getNewsByCategory(category: String): List<NewsEntity>
 }

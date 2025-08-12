@@ -2,6 +2,8 @@ package com.example.newsaggregator.feature.newsfeed.presentation.screen.feed
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,11 +12,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.TopAppBar
@@ -23,6 +31,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +56,7 @@ fun NewsFeedScreen(
         state = state,
         onRefresh = { viewModel.loadHeadlines() },
         onNewsClick = onNewsClick,
+        onCategorySelect = { category -> viewModel.selectCategory(category) }
     )
 }
 
@@ -55,9 +66,23 @@ private fun NewsFeedContent(
     state: NewsFeedState,
     onRefresh: () -> Unit,
     onNewsClick: (String) -> Unit,
+    onCategorySelect: (String) -> Unit = {},
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(title = { Text1("Новости") })
+        TopAppBar(
+            title = { Text1("Новости") },
+            actions = {
+                IconButton(onClick = { /* Поиск */ }) {
+                    Icon(Icons.Default.Search, "Поиск")
+                }
+            }
+        )
+
+        CategoriesRow(
+            categories = state.categories,
+            selectedCategory = state.selectedCategory,
+            onCategorySelect = onCategorySelect
+        )
 
         when {
             state.isLoading -> LoadingView()
@@ -67,6 +92,63 @@ private fun NewsFeedContent(
                 onNewsClick = onNewsClick
             )
         }
+    }
+}
+
+@Composable
+private fun CategoriesRow(
+    categories: ImmutableList<String>,
+    selectedCategory: String,
+    onCategorySelect: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.White)
+            .padding(vertical = 8.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(categories.size) { index ->
+            val category = categories[index]
+            CategoryChip(
+                category = category,
+                isSelected = category == selectedCategory,
+                onClick = { onCategorySelect(category) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun CategoryChip(
+    category: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor = if (isSelected) colorScheme.primary else colorScheme.surface
+    val contentColor = if (isSelected) colorScheme.onPrimary else colorScheme.onSurface
+    val borderColor = if (isSelected) Color.Transparent else colorScheme.outline
+
+    Box(
+        modifier = modifier
+            .clip(MaterialTheme.shapes.medium)
+            .border(
+                width = 1.dp,
+                color = borderColor,
+                shape = MaterialTheme.shapes.medium
+            )
+            .background(backgroundColor)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Text1(
+            text = category.replaceFirstChar { it.titlecase() },
+            color = contentColor,
+            style = typography1.labelLarge
+        )
     }
 }
 
@@ -171,7 +253,8 @@ private fun NewsFeedScreenPreview() {
                             source = "source 1",
                             content = "TODO()",
                             author = "author 1",
-                            isFavorite = true
+                            isFavorite = true,
+                            category = null,
                         ),
                         NewsItem(
                             id = "2",
@@ -183,7 +266,8 @@ private fun NewsFeedScreenPreview() {
                             source = "source 2",
                             content = "TODO()",
                             author = "author 2",
-                            isFavorite = false
+                            isFavorite = false,
+                            category = null,
                         )
                     )
                 )
