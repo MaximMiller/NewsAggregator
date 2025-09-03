@@ -1,6 +1,5 @@
 package com.example.newsaggregator.feature.newsfeed.presentation.screen.feed
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,6 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -41,9 +42,8 @@ import com.example.newsaggregator.core.util.ImmutableList
 import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 import com.example.newsaggregator.feature.newsfeed.presentation.component.NewsCardCell
 import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.state.NewsFeedState
+import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.state.NewsFeedState.NewsCategory
 import com.example.newsaggregator.feature.newsfeed.presentation.viewmodel.NewsFeedViewModel
-import androidx.compose.material3.MaterialTheme.typography as typography1
-import androidx.compose.material3.Text as Text1
 
 @Composable
 fun NewsFeedScreen(
@@ -70,7 +70,7 @@ private fun NewsFeedContent(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
-            title = { Text1("Новости") },
+            title = { Text("Новости") },
             actions = {
                 IconButton(onClick = { /* Поиск */ }) {
                     Icon(Icons.Default.Search, "Поиск")
@@ -97,7 +97,7 @@ private fun NewsFeedContent(
 
 @Composable
 private fun CategoriesRow(
-    categories: ImmutableList<String>,
+    categories: ImmutableList<NewsCategory>,
     selectedCategory: String,
     onCategorySelect: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -113,9 +113,9 @@ private fun CategoriesRow(
         items(categories.size) { index ->
             val category = categories[index]
             CategoryChip(
-                category = category,
-                isSelected = category == selectedCategory,
-                onClick = { onCategorySelect(category) }
+                category = category.name,
+                isSelected = category.name == selectedCategory,
+                onClick = { onCategorySelect(category.name) }
             )
         }
     }
@@ -144,10 +144,10 @@ private fun CategoryChip(
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        Text1(
+        Text(
             text = category.replaceFirstChar { it.titlecase() },
             color = contentColor,
-            style = typography1.labelLarge
+            style = typography.labelLarge
         )
     }
 }
@@ -188,7 +188,7 @@ private fun EmptyStateView() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text1("Новости не найдены", style = typography1.bodyMedium)
+        Text("Новости не найдены", style = typography.bodyMedium)
     }
 }
 
@@ -211,9 +211,9 @@ private fun LoadingView() {
                 strokeCap = StrokeCap.Round,
                 strokeWidth = 6.dp
             )
-            Text1(
+            Text(
                 text = "Загрузка...",
-                style = MaterialTheme.typography.bodyLarge,
+                style = typography.bodyLarge,
                 color = colorScheme.onSurface
             )
         }
@@ -227,10 +227,10 @@ private fun ErrorView(error: String, onRetry: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text1(text = error, color = colorScheme.error)
+        Text(text = error, color = colorScheme.error)
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onRetry) {
-            Text1("Повторить")
+            Text("Повторить")
         }
     }
 }
