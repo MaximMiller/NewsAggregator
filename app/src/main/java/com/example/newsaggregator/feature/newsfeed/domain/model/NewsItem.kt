@@ -8,5 +8,8 @@ data class NewsItem(
     val imageUrl: String?,
     val publishedAt: String,
     val source: String,
-    val isFavorite: Boolean
+    val content: String?,
+    val author: String?,
+    val isFavorite: Boolean = false,
+    val category: String?,
 )
