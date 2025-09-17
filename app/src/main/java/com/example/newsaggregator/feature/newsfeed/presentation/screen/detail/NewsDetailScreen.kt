@@ -49,6 +49,8 @@ import androidx.core.net.toUri
 import com.example.newsaggregator.feature.newsfeed.presentation.component.ErrorView
 import com.example.newsaggregator.feature.newsfeed.presentation.component.LoadingView
 import com.example.newsaggregator.feature.newsfeed.presentation.component.NewsImage
+import androidx.compose.ui.res.stringResource
+import com.example.newsaggregator.R
 
 @Composable
 fun NewsDetailScreen(
@@ -111,13 +113,13 @@ fun NewsDetailTopAppBar(
         title = {
             if (category != null) {
                 Text(
-                    text = "Детали новости: ${category.replaceFirstChar { it.titlecase() }}",
+                    text = stringResource(R.string.news_detail) + ": " + category.replaceFirstChar { it.titlecase() },
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             } else {
                 Text(
-                    text = "Детали новости в общей категории",
+                    text = stringResource(R.string.news_detail),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -127,7 +129,7 @@ fun NewsDetailTopAppBar(
             IconButton(onClick = onBackClick) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Назад"
+                    contentDescription = stringResource(R.string.cd_back_icon)
                 )
             }
         }
@@ -167,7 +169,7 @@ fun NewsDetailView(newsItem: NewsItem) {
         ) {
 
             Text(
-                text = "Источник: ${newsItem.source}",
+                text = stringResource(R.string.news_source, newsItem.source),
                 style = typography.bodySmall,
                 color = colorScheme.onSurface.copy(alpha = 0.7f)
             )
@@ -175,7 +177,7 @@ fun NewsDetailView(newsItem: NewsItem) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Опубликовано: ${formatDate(newsItem.publishedAt)}",
+                text = stringResource(R.string.news_published, formatDate(newsItem.publishedAt)),
                 style = typography.bodySmall,
                 color = colorScheme.onSurface.copy(alpha = 0.7f)
             )
@@ -206,7 +208,7 @@ fun NewsDetailView(newsItem: NewsItem) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Читать на сайте")
+                Text(  text = stringResource(R.string.read_on_website))
             }
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -239,12 +241,12 @@ fun AdPlaceholder() {
             ) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Реклама",
+                    contentDescription = stringResource(R.string.cd_advertisement),
                     tint = colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     modifier = Modifier.size(16.dp)
                 )
                 Text(
-                    text = "Рекламный баннер",
+                    text = stringResource(R.string.advertisement),
                     style = typography.labelSmall,
                     color = colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                 )
@@ -254,7 +256,7 @@ fun AdPlaceholder() {
                 modifier = Modifier.align(Alignment.Center)
             ) {
                 Text(
-                    text = "Здесь может быть ваша реклама",
+                    text = stringResource(R.string.ad_placeholder),
                     style = typography.bodySmall,
                     color = colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
                 )

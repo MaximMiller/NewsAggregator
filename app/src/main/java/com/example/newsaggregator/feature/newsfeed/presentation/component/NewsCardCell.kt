@@ -15,10 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.example.newsaggregator.R
 import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 
 @Composable
@@ -40,7 +41,7 @@ fun NewsCardCell(
         Column {
             NewsImage(
                 imageUrl = newsItem.imageUrl,
-                contentDescription = contentDescription,
+                contentDescription = contentDescription ?: stringResource(R.string.cd_news_image),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
@@ -76,37 +77,10 @@ fun NewsCardCell(
                 ) {
                     FavoriteButton(
                         isFavorite = isFavorite,
-                        onFavoriteClick =  { onFavoriteClick() }
+                        onFavoriteClick = onFavoriteClick
                     )
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NewsCardCellPreview() {
-    MaterialTheme {
-        NewsCardCell(
-            newsItem = NewsItem(
-                title = "Sample News Title",
-                author = "John Doe",
-                description = "This is a sample news description that might be a bit longer to test the ellipsis functionality",
-                source = "Sample Source",
-                publishedAt = "2023-05-15",
-                isFavorite = false,
-                id = 0,
-                url = "",
-                imageUrl = null,
-                content = null,
-                category = null,
-            ),
-            modifier = Modifier.padding(16.dp),
-            onFavoriteClick = TODO(),
-            isFavorite = TODO(),
-            onClick = TODO(),
-            contentDescription = TODO()
-        )
     }
 }

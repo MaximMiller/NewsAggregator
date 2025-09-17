@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.newsaggregator.core.util.ImmutableList
@@ -42,6 +41,8 @@ import com.example.newsaggregator.feature.newsfeed.presentation.component.NewsCa
 import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.state.NewsFeedState
 import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.state.NewsFeedState.NewsCategory
 import com.example.newsaggregator.feature.newsfeed.presentation.viewmodel.NewsFeedViewModel
+import androidx.compose.ui.res.stringResource
+import com.example.newsaggregator.R
 
 @Composable
 fun NewsFeedScreen(
@@ -73,13 +74,18 @@ private fun NewsFeedContent(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
-            title = { Text("Новости") },
+            title = { Text(stringResource(R.string.news)) },
             actions = {
                 IconButton(onClick = onFavoritesClick) {
-                    Icon(Icons.Default.Favorite, "Избранное", tint =colorScheme.onSurface.copy(red = 0.6f))
+                    Icon(
+                        Icons.Default.Favorite,
+                        stringResource(R.string.cd_favorite_icon),
+                        tint = colorScheme.onSurface.copy(red = 0.6f)
+                    )
                 }
                 IconButton(onClick = { /* Поиск */ }) {
-                    Icon(Icons.Default.Search, "Поиск")
+                    Icon(Icons.Default.Search, stringResource(R.string.cd_search_icon)
+                    )
                 }
             }
         )
@@ -189,75 +195,5 @@ private fun NewsList(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun NewsFeedScreenPreview() {
-    MaterialTheme {
-        NewsFeedContent(
-            state = NewsFeedState(
-                newsItems = ImmutableList(
-                    listOf(
-                        NewsItem(
-                            id = 1,
-                            title = "Пример новости 1",
-                            description = "Краткое описание новости 1",
-                            publishedAt = "2023-05-15",
-                            url = "",
-                            imageUrl = null,
-                            source = "source 1",
-                            content = "TODO()",
-                            author = "author 1",
-                            isFavorite = true,
-                            category = null,
-                        ),
-                        NewsItem(
-                            id = 2,
-                            title = "Пример новости 2",
-                            description = "Краткое описание новости 2",
-                            publishedAt = "2023-05-16",
-                            url = "",
-                            imageUrl = null,
-                            source = "source 2",
-                            content = "TODO()",
-                            author = "author 2",
-                            isFavorite = false,
-                            category = null,
-                        )
-                    )
-                )
-            ),
-            onRefresh = {},
-            onNewsClick = {},
-            onFavoriteClick = TODO(),
-            onCategorySelect = TODO(),
-            onFavoritesClick = TODO()
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun LoadingPreview() {
-    MaterialTheme {
-        LoadingView()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ErrorPreview() {
-    MaterialTheme {
-        ErrorView(error = "Ошибка загрузки", onRetry = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun EmptyPreview() {
-    MaterialTheme {
-        EmptyStateView()
     }
 }

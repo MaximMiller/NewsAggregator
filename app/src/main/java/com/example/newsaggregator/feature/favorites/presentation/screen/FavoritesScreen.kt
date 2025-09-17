@@ -42,6 +42,9 @@ import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 import com.example.newsaggregator.feature.newsfeed.presentation.component.ErrorView
 import com.example.newsaggregator.feature.newsfeed.presentation.component.LoadingView
 import com.example.newsaggregator.feature.newsfeed.presentation.component.NewsImage
+import androidx.compose.ui.res.stringResource
+import com.example.newsaggregator.R
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,10 +62,11 @@ fun FavoritesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Избранное") },
+                title = { Text(stringResource(R.string.favorites)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, "Назад")
+                        Icon(Icons.Default.ArrowBack, stringResource(R.string.cd_back_icon)
+                        )
                     }
                 }
             )
@@ -152,7 +156,7 @@ fun FavoriteNewsCard(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Удалить из избранного",
+                    contentDescription = stringResource(R.string.remove_from_favorites),
                     tint = MaterialTheme.colorScheme.error
                 )
             }
@@ -171,13 +175,13 @@ fun EmptyFavoritesView() {
     ) {
         Icon(
             imageVector = Icons.Outlined.Favorite,
-            contentDescription = "Нет избранного",
+            contentDescription = stringResource(R.string.cd_no_favorites),
             modifier = Modifier.size(64.dp),
             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Нет избранных новостей",
+            text = stringResource(R.string.favorites_empty),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
         )
