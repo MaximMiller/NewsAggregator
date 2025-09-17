@@ -1,7 +1,7 @@
 package com.example.newsaggregator.feature.newsfeed.domain.model
 
 data class NewsItem(
-    val id: Long = 0,
+    val id: Long,
     val title: String,
     val description: String?,
     val url: String,
@@ -12,4 +12,8 @@ data class NewsItem(
     val author: String?,
     val isFavorite: Boolean = false,
     val category: String?,
-)
+) {
+    fun getStableId(): Long {
+        return url.hashCode().toLong()
+    }
+}

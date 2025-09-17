@@ -25,4 +25,10 @@ interface NewsDao {
 
     @Query("SELECT * FROM news WHERE url = :id")
     suspend fun getNewsById(id: Long): NewsEntity?
+
+    @Query("UPDATE news SET is_favorite = :isFavorite WHERE id = :newsId")
+    suspend fun updateFavoriteStatus(newsId: Long, isFavorite: Boolean)
+
+    @Query("SELECT * FROM news WHERE is_favorite = 1 ORDER BY published_at DESC")
+    suspend fun getFavoriteNews(): List<NewsEntity>
 }

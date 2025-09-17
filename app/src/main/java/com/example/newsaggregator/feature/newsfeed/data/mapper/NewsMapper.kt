@@ -1,23 +1,24 @@
 package com.example.newsaggregator.feature.newsfeed.data.mapper
 
+import com.example.newsaggregator.feature.favorites.domain.action.IsFavoriteCheckAction
 import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
 import com.example.newsaggregator.feature.newsfeed.data.remote.dto.ArticleDto
 import com.example.newsaggregator.feature.newsfeed.domain.model.FeedType
 import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
-import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
-class NewsMapper @Inject constructor() {
-    private val idCounter = AtomicLong(0)
+class NewsMapper @Inject constructor(
+    private val isFavoriteCheckAction: IsFavoriteCheckAction
+) {
 
-    fun dtoToEntity(
+    suspend fun dtoToEntity(
         dto: ArticleDto,
         feedType: FeedType,
         page: Int? = null,
         searchQuery: String? = null,
         category: String? = null,
     ): NewsEntity = NewsEntity(
-        id = idCounter.incrementAndGet(),
+        id = generateStableId(dto.url),
         url = dto.url,
         title = dto.title,
         description = dto.description ?: "",
@@ -27,7 +28,7 @@ class NewsMapper @Inject constructor() {
         urlToImage = dto.urlToImage,
         publishedAt = dto.publishedAt ?: "",
         content = dto.content,
-        isFavorite = false,
+        isFavorite = isFavoriteCheckAction(generateStableId(dto.url)),
         feedType = feedType,
         page = page ?: 1,
         searchQuery = searchQuery,
@@ -65,9 +66,14 @@ class NewsMapper @Inject constructor() {
         urlToImage = domain.imageUrl,
         publishedAt = domain.publishedAt,
         content = null,
+        isFavorite = domain.isFavorite,
         feedType = feedType,
         page = page ?: 1,
         searchQuery = searchQuery,
         category = category,
     )
+
+    private fun generateStableId(url: String): Long {
+        return url.hashCode().toLong()
+    }
 }

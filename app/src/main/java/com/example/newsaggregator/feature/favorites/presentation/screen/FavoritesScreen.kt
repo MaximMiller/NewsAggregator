@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.newsaggregator.core.util.ImmutableList
 import com.example.newsaggregator.feature.favorites.presentation.viemodel.FavoritesViewModel
 import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 import com.example.newsaggregator.feature.newsfeed.presentation.component.ErrorView
@@ -81,12 +82,11 @@ fun FavoritesScreen(
     }
 }
 
-@Suppress("NonSkippableComposable")
 @Composable
 fun FavoritesList(
-    favorites: List<NewsItem>,
+    favorites: ImmutableList<NewsItem>,
     onNewsClick: (Long) -> Unit,
-    onRemoveFavorite: (Long) -> Unit,
+    onRemoveFavorite: (NewsItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -98,7 +98,7 @@ fun FavoritesList(
             FavoriteNewsCard(
                 newsItem = item,
                 onClick = { onNewsClick(item.id) },
-                onRemoveClick = { onRemoveFavorite(item.id) }
+                onRemoveClick = { onRemoveFavorite(item) }
             )
         }
     }

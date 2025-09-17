@@ -1,5 +1,6 @@
 package com.example.newsaggregator.feature.newsfeed.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsaggregator.feature.newsfeed.domain.usecase.GetNewsDetailUseCase
@@ -17,6 +18,10 @@ class NewsDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewsDetailState())
     val state: StateFlow<NewsDetailState> = _state.asStateFlow()
+
+    init {
+        Log.d("tag", this.toString())
+    }
 
     fun loadNewsDetail(newsId: Long) {
         _state.value = _state.value.copy(isLoading = true)

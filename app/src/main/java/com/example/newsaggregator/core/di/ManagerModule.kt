@@ -1,6 +1,9 @@
 package com.example.newsaggregator.core.di
 
-import com.example.newsaggregator.core.FavoritesManager
+import com.example.newsaggregator.feature.favorites.data.FavoritesManager
+import com.example.newsaggregator.feature.favorites.domain.action.IsFavoriteCheckAction
+import com.example.newsaggregator.feature.favorites.domain.action.RemoveFavoriteAction
+import com.example.newsaggregator.feature.favorites.domain.action.SaveFavoriteAction
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,8 +16,10 @@ object ManagerModule {
 
     @Provides
     @Singleton
-    fun provideFavoritesManager(): FavoritesManager {
-        return FavoritesManager()
-    }
+    fun provideFavoritesManager(
+        saveAction: SaveFavoriteAction,
+        removeAction: RemoveFavoriteAction,
+        isFavoriteCheckAction: IsFavoriteCheckAction
+    ): FavoritesManager = FavoritesManager(saveAction, removeAction, isFavoriteCheckAction)
 
 }

@@ -13,6 +13,7 @@ import com.example.newsaggregator.feature.favorites.domain.action.SaveFavoriteAc
 import com.example.newsaggregator.feature.newsfeed.data.action.FetchHeadlinesActionImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.GetSourcesActionImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.SearchNewsActionImpl
+import com.example.newsaggregator.feature.newsfeed.data.local.dao.NewsDao
 import com.example.newsaggregator.feature.newsfeed.data.mapper.NewsMapper
 import com.example.newsaggregator.feature.newsfeed.data.mapper.SourceMapper
 import com.example.newsaggregator.feature.newsfeed.data.remote.api.NewsApi
@@ -24,20 +25,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-
-/**
- * TODO: Реализовать feature-модули для DI (разделение по фичам)
- *
- * Планируется:
- * 1. Создать отдельные модули для каждой фичи
- * 2. Изучить Dagger Binding для:
- *    - Упрощения привязки интерфейсов к реализациям
- *    - Использования Multibinding для коллекций зависимостей
- *
- * @see dagger.Binds
- * @see dagger.multibindings.Multibinds
- *
- */
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -70,13 +57,15 @@ object ActionModule {
     @Provides
     fun provideSaveFavoriteAction(
         favoritesDao: FavoritesDao,
+        newsDao: NewsDao,
         mapper: FavoriteMapper
-    ): SaveFavoriteAction = SaveFavoriteActionImpl(favoritesDao, mapper)
+    ): SaveFavoriteAction = SaveFavoriteActionImpl(favoritesDao, newsDao, mapper)
 
     @Provides
     fun provideRemoveFavoriteAction(
         favoritesDao: FavoritesDao,
-    ): RemoveFavoriteAction = RemoveFavoriteActionImpl(favoritesDao)
+        newsDao: NewsDao,
+    ): RemoveFavoriteAction = RemoveFavoriteActionImpl(favoritesDao, newsDao)
 
     @Provides
     fun provideLoadFavoritesAction(
@@ -90,7 +79,9 @@ object ActionModule {
     ): IsFavoriteCheckAction = IsFavoriteCheckActionImpl(favoritesDao)
 
     @Provides
-    fun provideNewsMapper(): NewsMapper = NewsMapper()
+    fun provideNewsMapper(
+        isFavoriteCheckAction: IsFavoriteCheckAction
+    ): NewsMapper = NewsMapper(isFavoriteCheckAction)
 
     @Provides
     fun provideSourceMapper(): SourceMapper = SourceMapper()
