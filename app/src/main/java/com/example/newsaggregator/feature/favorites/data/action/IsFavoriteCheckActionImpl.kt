@@ -7,7 +7,7 @@ import javax.inject.Inject
 internal class IsFavoriteCheckActionImpl @Inject constructor(
     private val dao: FavoritesDao
 ) : IsFavoriteCheckAction {
-    override suspend fun invoke(newsUrl: String): Boolean {
-        return dao.isNewsFavorite(newsUrl)
+    override suspend fun invoke(newsId: Long): Boolean {
+        return dao.isNewsFavorite(newsId)
     }
 }

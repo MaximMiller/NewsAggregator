@@ -7,7 +7,7 @@ import javax.inject.Inject
 internal class RemoveFavoriteActionImpl @Inject constructor(
     private val dao: FavoritesDao
 ) : RemoveFavoriteAction {
-    override suspend fun invoke(newsUrl: String) {
-        dao.removeFavorite(newsUrl)
+    override suspend fun invoke(newsId: Long) {
+        dao.removeFavorite(newsId)
     }
 }

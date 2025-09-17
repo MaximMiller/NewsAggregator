@@ -22,4 +22,7 @@ interface NewsDao {
 
     @Query("SELECT * FROM news WHERE category = :category AND feed_type = 'CATEGORY'")
     suspend fun getNewsByCategory(category: String): List<NewsEntity>
+
+    @Query("SELECT * FROM news WHERE url = :id")
+    suspend fun getNewsById(id: Long): NewsEntity?
 }

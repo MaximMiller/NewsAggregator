@@ -13,7 +13,7 @@ import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 @Composable
 fun NewsContent(
     newsItem: NewsItem,
-    onFavoriteClick: (Boolean) -> Unit,
+    onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -51,7 +51,7 @@ fun NewsContentPreview() {
                 source = "Sample Source",
                 publishedAt = "2023-05-15",
                 isFavorite = false,
-                id = "",
+                id = 0,
                 url = "",
                 imageUrl = null,
                 content = "Sample News Content",

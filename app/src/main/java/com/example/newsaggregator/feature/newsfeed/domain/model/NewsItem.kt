@@ -1,7 +1,7 @@
 package com.example.newsaggregator.feature.newsfeed.domain.model
 
 data class NewsItem(
-    val id: String,
+    val id: Long = 0,
     val title: String,
     val description: String?,
     val url: String,

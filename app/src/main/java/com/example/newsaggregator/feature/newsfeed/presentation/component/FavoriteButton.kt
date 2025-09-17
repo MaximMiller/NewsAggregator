@@ -18,11 +18,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun FavoriteButton(
     isFavorite: Boolean,
-    onFavoriteClick: (Boolean) -> Unit,
+    onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     IconButton(
-        onClick = { onFavoriteClick(!isFavorite) },
+        onClick = {
+            onFavoriteClick()
+        },
         modifier = modifier.size(24.dp)
     ) {
         Icon(
@@ -44,9 +47,15 @@ fun FavoriteButton(
 fun FavoriteButtonPreview() {
     MaterialTheme {
         Row {
-            FavoriteButton(isFavorite = false, onFavoriteClick = {})
+            FavoriteButton(
+                isFavorite = false,
+                onFavoriteClick = {}
+            )
             Spacer(Modifier.width(8.dp))
-            FavoriteButton(isFavorite = true, onFavoriteClick = {})
+            FavoriteButton(
+                isFavorite = true,
+                onFavoriteClick = {}
+            )
         }
     }
 }

@@ -2,7 +2,10 @@ package com.example.newsaggregator.feature.newsfeed.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.newsaggregator.core.FavoritesManager
 import com.example.newsaggregator.core.util.toImmutableList
+import com.example.newsaggregator.feature.favorites.domain.usecase.ToggleFavoriteUseCase
+import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 import com.example.newsaggregator.feature.newsfeed.domain.usecase.GetHeadlinesByCategoryUseCase
 import com.example.newsaggregator.feature.newsfeed.domain.usecase.GetHeadlinesUseCase
 import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.state.NewsFeedState
@@ -18,6 +21,8 @@ import javax.inject.Inject
 class NewsFeedViewModel @Inject constructor(
     private val getHeadlinesUseCase: GetHeadlinesUseCase,
     private val getHeadlinesByCategoryUseCase: GetHeadlinesByCategoryUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val favoritesManager: FavoritesManager
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewsFeedState.Empty)
     val state: StateFlow<NewsFeedState> = _state.asStateFlow()
@@ -82,4 +87,25 @@ class NewsFeedViewModel @Inject constructor(
                 }
         }
     }
+
+    fun toggleFavorite(item: NewsItem) {
+        viewModelScope.launch {
+            val newFavoriteState = !item.isFavorite
+            toggleFavoriteUseCase(item.copy(isFavorite = newFavoriteState))
+
+            favoritesManager.notifyFavoritesChanged()
+
+            _state.update { currentState ->
+                val updatedItems = currentState.newsItems.map { news ->
+                    if (news.id == item.id) {
+                        news.copy(isFavorite = newFavoriteState)
+                    } else {
+                        news
+                    }
+                }.toImmutableList()
+                currentState.copy(newsItems = updatedItems)
+            }
+        }
+    }
+
 }

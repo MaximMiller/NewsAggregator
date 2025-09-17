@@ -16,7 +16,7 @@ fun NewsFooter(
     source: String?,
     publishedAt: String,
     isFavorite: Boolean,
-    onFavoriteClick: (Boolean) -> Unit,
+    onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -51,7 +51,7 @@ fun NewsFooterPreview() {
         NewsFooter(
             source = "Sample Source",
             publishedAt = "2023-05-15",
-            isFavorite = false,
+            isFavorite = true,
             onFavoriteClick = {}
         )
     }

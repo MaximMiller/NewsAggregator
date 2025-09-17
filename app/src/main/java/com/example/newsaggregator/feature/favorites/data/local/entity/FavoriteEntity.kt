@@ -11,20 +11,20 @@ import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
     tableName = "favorites",
     foreignKeys = [ForeignKey(
         entity = NewsEntity::class,
-        parentColumns = ["url"],
-        childColumns = ["news_url"],
+        parentColumns = ["id"],
+        childColumns = ["news_id"],
         onDelete = ForeignKey.CASCADE
     )],
     indices = [
-        Index("news_url", unique = true),
+        Index("news_id", unique = true),
         Index("saved_at")
 
     ]
 )
 data class FavoriteEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id: Int = 0,
+    @ColumnInfo(name = "id") val id: Long = 0,
 
-    @ColumnInfo(name = "news_url") val newsUrl: String,
+    @ColumnInfo(name = "news_id") val newsId: Long,
     @ColumnInfo(name = "saved_at") val savedAt: Long = System.currentTimeMillis()
 )

@@ -4,9 +4,12 @@ import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
 import com.example.newsaggregator.feature.newsfeed.data.remote.dto.ArticleDto
 import com.example.newsaggregator.feature.newsfeed.domain.model.FeedType
 import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 class NewsMapper @Inject constructor() {
+    private val idCounter = AtomicLong(0)
+
     fun dtoToEntity(
         dto: ArticleDto,
         feedType: FeedType,
@@ -14,6 +17,7 @@ class NewsMapper @Inject constructor() {
         searchQuery: String? = null,
         category: String? = null,
     ): NewsEntity = NewsEntity(
+        id = idCounter.incrementAndGet(),
         url = dto.url,
         title = dto.title,
         description = dto.description ?: "",
@@ -31,7 +35,7 @@ class NewsMapper @Inject constructor() {
     )
 
     fun entityToDomain(entity: NewsEntity): NewsItem = NewsItem(
-        id = entity.url,
+        id = entity.id,
         title = entity.title,
         description = entity.description.takeIf { it.isNotEmpty() },
         url = entity.url,
@@ -51,7 +55,8 @@ class NewsMapper @Inject constructor() {
         searchQuery: String? = null,
         category: String? = null,
     ): NewsEntity = NewsEntity(
-        url = domain.id,
+        id = domain.id,
+        url = domain.url,
         title = domain.title,
         description = domain.description ?: "",
         author = null,
