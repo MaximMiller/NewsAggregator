@@ -1,6 +1,5 @@
 package com.example.newsaggregator.feature.newsfeed.domain.usecase
 
-import android.util.Log
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedSourcesByFiltersAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetSourcesAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.SaveSourcesToCacheAction
@@ -22,15 +21,8 @@ class GetSourcesUseCase @Inject constructor(
             saveToCache(sources)
             sources
         } catch (e: Exception) {
-            Log.e(
-                "GetSourcesUseCase",
-                "Error: ${e.message}. Params: category=$category, lang=$language",
-                e
-            )
             val cachedSources = getFromCache(category, language, country)
-            if (cachedSources.isNotEmpty()) {
-                cachedSources
-            } else {
+            cachedSources.ifEmpty {
                 throw e
             }
         }

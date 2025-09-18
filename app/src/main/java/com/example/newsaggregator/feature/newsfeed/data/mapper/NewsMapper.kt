@@ -1,13 +1,17 @@
 package com.example.newsaggregator.feature.newsfeed.data.mapper
 
+import com.example.newsaggregator.feature.favorites.domain.action.IsFavoriteCheckAction
 import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
 import com.example.newsaggregator.feature.newsfeed.data.remote.dto.ArticleDto
 import com.example.newsaggregator.feature.newsfeed.domain.model.FeedType
 import com.example.newsaggregator.feature.newsfeed.domain.model.NewsItem
 import javax.inject.Inject
 
-class NewsMapper @Inject constructor() {
-    fun dtoToEntity(
+class NewsMapper @Inject constructor(
+    private val isFavoriteCheckAction: IsFavoriteCheckAction
+) {
+
+    suspend fun dtoToEntity(
         dto: ArticleDto,
         feedType: FeedType,
         page: Int? = null,
@@ -23,7 +27,7 @@ class NewsMapper @Inject constructor() {
         urlToImage = dto.urlToImage,
         publishedAt = dto.publishedAt ?: "",
         content = dto.content,
-        isFavorite = false,
+        isFavorite = isFavoriteCheckAction(dto.url),
         feedType = feedType,
         page = page ?: 1,
         searchQuery = searchQuery,
@@ -31,10 +35,9 @@ class NewsMapper @Inject constructor() {
     )
 
     fun entityToDomain(entity: NewsEntity): NewsItem = NewsItem(
-        id = entity.url,
+        url = entity.url,
         title = entity.title,
         description = entity.description.takeIf { it.isNotEmpty() },
-        url = entity.url,
         imageUrl = entity.urlToImage,
         publishedAt = entity.publishedAt,
         source = entity.sourceName,
@@ -51,7 +54,7 @@ class NewsMapper @Inject constructor() {
         searchQuery: String? = null,
         category: String? = null,
     ): NewsEntity = NewsEntity(
-        url = domain.id,
+        url = domain.url,
         title = domain.title,
         description = domain.description ?: "",
         author = null,
@@ -60,6 +63,7 @@ class NewsMapper @Inject constructor() {
         urlToImage = domain.imageUrl,
         publishedAt = domain.publishedAt,
         content = null,
+        isFavorite = domain.isFavorite,
         feedType = feedType,
         page = page ?: 1,
         searchQuery = searchQuery,

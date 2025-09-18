@@ -1,3 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NewsAggregator</string>
+
+    <!-- Common -->
+    <string name="news">Новости</string>
+    <string name="favorites">Избранное</string>
+    <string name="search">Поиск</string>
+    <string name="back">Назад</string>
+    <string name="retry">Повторить</string>
+    <string name="error_occurred">Произошла ошибка</string>
+    <string name="unknown_source">Неизвестный источник</string>
+
+    <!-- News Feed -->
+    <string name="categories_all">ALL</string>
+    <string name="categories_general">GENERAL</string>
+    <string name="categories_business">BUSINESS</string>
+    <string name="categories_health">HEALTH</string>
+    <string name="categories_technology">TECHNOLOGY</string>
+    <string name="categories_sports">SPORTS</string>
+    <string name="categories_entertainment">ENTERTAINMENT</string>
+    <string name="categories_science">SCIENCE</string>
+
+    <!-- Search -->
+    <string name="search_hint">Поиск новостей…</string>
+    <string name="search_results">Результаты поиска</string>
+    <string name="search_empty">По запросу "%s" ничего не найдено</string>
+    <string name="search_try_another">Попробуйте изменить поисковый запрос</string>
+    <string name="search_error">Ошибка поиска</string>
+
+    <!-- Favorites -->
+    <string name="favorites_empty">Нет избранных новостей</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
+
+    <!-- Errors -->
+    <string name="error_loading_news">Ошибка загрузки новостей</string>
+    <string name="error_loading_favorites">Ошибка загрузки избранного</string>
+    <string name="error_loading_details">Ошибка загрузки деталей</string>
+    <string name="error_network">Проверьте подключение к интернету</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_favorite_icon">Избранное</string>
+    <string name="cd_search_icon">Поиск</string>
+    <string name="cd_back_icon">Назад</string>
+    <string name="cd_delete_icon">Удалить из избранного</string>
+    <string name="cd_news_image">Изображение новости</string>
+    <string name="cd_no_favorites">Нет избранного</string>
+    <string name="cd_no_results">Ничего не найдено</string>
+
+    <!-- News Detail -->
+    <string name="news_detail">Детали новости</string>
+    <string name="news_source">Источник: %s</string>
+    <string name="news_published">Опубликовано: %s</string>
+    <string name="news_author">Автор: %s</string>
+
+    <!-- Loading -->
+    <string name="loading">Загрузка…</string>
+
+    <!-- Advertisement -->
+    <string name="advertisement">Реклама</string>
+    <string name="ad_placeholder">Здесь может быть ваша реклама</string>
+    <string name="cd_advertisement">Рекламный баннер</string>
+
+    <!-- Empty States -->
+    <string name="no_news_available">Нет доступных новостей</string>
+    <string name="cd_no_news">Нет новостей</string>
+
+    <!-- Button -->
+    <string name="read_on_website">Читать на сайте</string>
+
 </resources>

@@ -26,5 +26,4 @@ interface FavoritesDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE news_url = :newsUrl LIMIT 1)")
     suspend fun isNewsFavorite(newsUrl: String): Boolean
-
 }

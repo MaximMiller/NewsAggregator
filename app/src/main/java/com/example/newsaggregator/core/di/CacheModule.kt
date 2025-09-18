@@ -1,5 +1,6 @@
 package com.example.newsaggregator.core.di
 
+import com.example.newsaggregator.feature.favorites.domain.action.IsFavoriteCheckAction
 import com.example.newsaggregator.feature.newsfeed.data.action.GetCachedHeadlinesImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.GetCachedNewsByQueryImpl
 import com.example.newsaggregator.feature.newsfeed.data.action.GetCachedSourcesByFiltersImpl
@@ -42,14 +43,16 @@ object CacheModule {
     @Provides
     fun provideSaveNewsToCacheAction(
         dao: NewsDao,
-        mapper: NewsMapper
-    ): SaveNewsToCacheAction = SaveNewsToCacheImpl(dao, mapper)
+        mapper: NewsMapper,
+        isFavoriteCheckAction: IsFavoriteCheckAction
+    ): SaveNewsToCacheAction = SaveNewsToCacheImpl(dao, mapper, isFavoriteCheckAction)
 
     @Provides
     fun provideSaveCategoryNewsToCacheAction(
         dao: NewsDao,
-        mapper: NewsMapper
-    ): SaveCategoryNewsToCacheAction = SaveNewsToCacheImpl(dao, mapper)
+        mapper: NewsMapper,
+        isFavoriteCheckAction: IsFavoriteCheckAction
+    ): SaveCategoryNewsToCacheAction = SaveNewsToCacheImpl(dao, mapper, isFavoriteCheckAction)
 
     @Provides
     fun provideGetCachedNewsByQueryAction(

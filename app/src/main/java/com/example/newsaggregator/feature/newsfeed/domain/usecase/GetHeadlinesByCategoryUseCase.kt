@@ -1,6 +1,5 @@
 package com.example.newsaggregator.feature.newsfeed.domain.usecase
 
-import android.util.Log
 import com.example.newsaggregator.feature.newsfeed.domain.action.FetchHeadlinesByCategoryAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedHeadlinesByCategoryAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.SaveCategoryNewsToCacheAction
@@ -18,20 +17,16 @@ class GetHeadlinesByCategoryUseCase @Inject constructor(
         category: String,
         forceRefresh: Boolean = false
     ): Result<List<NewsItem>> = runCatching {
-        if (forceRefresh) {
+        val news =   if (forceRefresh) {
             fetchAndCache(country, category)
         } else {
             try {
                 fetchAndCache(country, category)
             } catch (e: Exception) {
-                Log.e(
-                    "GetHeadlinesByCategoryUseCase",
-                    "Fetch failed. Fallback to cache. Params: country=$country, category=$category",
-                    e
-                )
                 getFromCache(category)
             }
         }
+        return@runCatching news
     }
 
     private suspend fun fetchAndCache(country: String, category: String): List<NewsItem> {

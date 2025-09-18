@@ -18,12 +18,11 @@ import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
     indices = [
         Index("news_url", unique = true),
         Index("saved_at")
-
     ]
 )
 data class FavoriteEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id: Int = 0,
+    @ColumnInfo(name = "id") val id: Long = 0,
 
     @ColumnInfo(name = "news_url") val newsUrl: String,
     @ColumnInfo(name = "saved_at") val savedAt: Long = System.currentTimeMillis()

@@ -1,7 +1,6 @@
 package com.example.newsaggregator.core.di
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.newsaggregator.core.database.AppDatabase
@@ -30,9 +29,7 @@ object DatabaseModule {
             "news_aggregator.db"
         )
             .addCallback(object : RoomDatabase.Callback() {
-                override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
-                    Log.w("AppDatabase", "Данные удалены из-за изменения схемы БД")
-                }
+                override fun onDestructiveMigration(db: SupportSQLiteDatabase) {}
             })
             .fallbackToDestructiveMigration()
             .build()

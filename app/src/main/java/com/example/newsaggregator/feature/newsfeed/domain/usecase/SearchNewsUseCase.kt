@@ -1,6 +1,5 @@
 package com.example.newsaggregator.feature.newsfeed.domain.usecase
 
-import android.util.Log
 import com.example.newsaggregator.feature.newsfeed.domain.action.GetCachedNewsByQueryAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.SaveNewsToCacheAction
 import com.example.newsaggregator.feature.newsfeed.domain.action.SearchNewsAction
@@ -23,12 +22,7 @@ class SearchNewsUseCase @Inject constructor(
             val results = searchAction(query, page)
             saveToCache(results, FeedType.SEARCH, page)
             results
-        }.recover { error ->
-            Log.e(
-                "SearchNewsUseCase",
-                "Search failed for query: '$query', page: $page",
-                error
-            )
+        }.recover {
             getFromCache(query, page)
         }
     }
