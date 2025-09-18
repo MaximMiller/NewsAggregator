@@ -20,6 +20,6 @@ internal class SaveFavoriteActionImpl @Inject constructor(
 
         favoritesDao.addFavorite(favoriteEntity)
 
-        newsDao.updateFavoriteStatus(item.id, true)
+        newsDao.updateFavoriteStatus(item.url, true)
     }
 }

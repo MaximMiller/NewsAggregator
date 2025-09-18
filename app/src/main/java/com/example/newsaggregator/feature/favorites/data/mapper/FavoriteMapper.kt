@@ -7,7 +7,7 @@ import javax.inject.Inject
 class FavoriteMapper @Inject constructor() {
     fun domainToEntity(item: NewsItem, savedAt: Long): FavoriteEntity {
         return FavoriteEntity(
-            newsId = item.id,
+            newsUrl = item.url,
             savedAt = savedAt
         )
     }

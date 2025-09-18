@@ -6,7 +6,7 @@ import javax.inject.Inject
 class RemoveFromFavoritesUseCase @Inject constructor(
     private val removeFavoriteAction: RemoveFavoriteAction
 ) {
-    suspend operator fun invoke(newsId: Long) {
-        removeFavoriteAction(newsId)
+    suspend operator fun invoke(newsUrl: String) {
+        removeFavoriteAction(newsUrl)
     }
 }

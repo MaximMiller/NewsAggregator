@@ -91,7 +91,7 @@ class NewsFeedViewModel @Inject constructor(
             val newFavoriteState = !item.isFavorite
             _state.update { currentState ->
                 val updatedItems = currentState.newsItems.map { news ->
-                    if (news.getStableId() == item.getStableId()) {
+                    if (news.url == item.url) {
                         news.copy(isFavorite = newFavoriteState)
                     } else {
                         news
@@ -106,7 +106,7 @@ class NewsFeedViewModel @Inject constructor(
 
     private suspend fun syncNewsWithFavorites(news: List<NewsItem>): List<NewsItem> {
         return news.map { item ->
-            val isFavorite = favoritesManager.getFavoriteState(item.getStableId())
+            val isFavorite = favoritesManager.getFavoriteState(item.url)
             item.copy(isFavorite = isFavorite)
         }
     }

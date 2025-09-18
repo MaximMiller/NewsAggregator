@@ -54,20 +54,20 @@ import com.example.newsaggregator.R
 
 @Composable
 fun NewsDetailScreen(
-    newsId: Long,
+    newsUrl: String,
     viewModel: NewsDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(newsId) {
-        viewModel.loadNewsDetail(newsId)
+    LaunchedEffect(newsUrl) {
+        viewModel.loadNewsDetail(newsUrl)
     }
 
     NewsDetailContent(
         state = state,
         onBackClick = onBackClick,
-        onRetry = { viewModel.loadNewsDetail(newsId) }
+        onRetry = { viewModel.loadNewsDetail(newsUrl) }
     )
 }
 

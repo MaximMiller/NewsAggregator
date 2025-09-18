@@ -51,7 +51,7 @@ import com.example.newsaggregator.R
 fun FavoritesScreen(
     viewModel: FavoritesViewModel = hiltViewModel(),
     onBackClick: () -> Unit = {},
-    onNewsClick: (Long) -> Unit = {}
+    onNewsClick: (String) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -89,7 +89,7 @@ fun FavoritesScreen(
 @Composable
 fun FavoritesList(
     favorites: ImmutableList<NewsItem>,
-    onNewsClick: (Long) -> Unit,
+    onNewsClick: (String) -> Unit,
     onRemoveFavorite: (NewsItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -101,7 +101,7 @@ fun FavoritesList(
         items(favorites) { item ->
             FavoriteNewsCard(
                 newsItem = item,
-                onClick = { onNewsClick(item.id) },
+                onClick = { onNewsClick(item.url) },
                 onRemoveClick = { onRemoveFavorite(item) }
             )
         }

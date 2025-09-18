@@ -12,7 +12,7 @@ import com.example.newsaggregator.feature.newsfeed.data.local.entity.NewsEntity
         NewsEntity::class,
         FavoriteEntity::class
     ],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 

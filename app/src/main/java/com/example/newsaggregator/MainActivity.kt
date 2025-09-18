@@ -13,6 +13,8 @@ import com.example.newsaggregator.feature.newsfeed.presentation.screen.detail.Ne
 import com.example.newsaggregator.feature.newsfeed.presentation.screen.feed.NewsFeedScreen
 import com.example.newsaggregator.ui.theme.NewsAggregatorTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -37,26 +39,29 @@ fun NavigationApp() {
     ) {
         composable("newsFeed") {
             NewsFeedScreen(
-                onNewsClick = { newsId ->
-                    navController.navigate("newsDetail/$newsId")
+                onNewsClick = { newsUrl ->
+                    val encodedUrl = URLEncoder.encode(newsUrl, "UTF-8")
+                    navController.navigate("newsDetail/$encodedUrl")
                 },
                 onFavoritesClick = {
                     navController.navigate("favorites")
                 }
             )
         }
-        composable("newsDetail/{newsId}") { backStackEntry ->
-            val newsId = backStackEntry.arguments?.getString("newsId")?.toLongOrNull() ?: 0
+        composable("newsDetail/{newsUrl}") { backStackEntry ->
+            val encodedUrl = backStackEntry.arguments?.getString("newsUrl") ?: ""
+            val newsUrl = URLDecoder.decode(encodedUrl, "UTF-8")
             NewsDetailScreen(
-                newsId = newsId,
+                newsUrl = newsUrl,
                 onBackClick = { navController.popBackStack() }
             )
         }
         composable("favorites") {
             FavoritesScreen(
                 onBackClick = { navController.popBackStack() },
-                onNewsClick = { newsId ->
-                    navController.navigate("newsDetail/$newsId")
+                onNewsClick = { newsUrl ->
+                    val encodedUrl = URLEncoder.encode(newsUrl, "UTF-8")
+                    navController.navigate("newsDetail/$encodedUrl")
                 }
             )
         }

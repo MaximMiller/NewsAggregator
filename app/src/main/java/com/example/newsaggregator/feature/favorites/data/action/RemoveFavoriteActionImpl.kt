@@ -9,8 +9,8 @@ internal class RemoveFavoriteActionImpl @Inject constructor(
     private val favoritesDao: FavoritesDao,
     private val newsDao: NewsDao,
 ) : RemoveFavoriteAction {
-    override suspend fun invoke(newsId: Long) {
-        favoritesDao.removeFavorite(newsId)
-        newsDao.updateFavoriteStatus(newsId, false)
+    override suspend fun invoke(newsUrl: String) {
+        favoritesDao.removeFavorite(newsUrl)
+        newsDao.updateFavoriteStatus(newsUrl, false)
     }
 }

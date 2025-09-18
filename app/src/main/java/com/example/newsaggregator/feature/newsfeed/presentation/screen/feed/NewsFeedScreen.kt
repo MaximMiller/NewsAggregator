@@ -47,7 +47,7 @@ import com.example.newsaggregator.R
 @Composable
 fun NewsFeedScreen(
     viewModel: NewsFeedViewModel = hiltViewModel(),
-    onNewsClick: (Long) -> Unit = {},
+    onNewsClick: (String) -> Unit = {},
     onFavoritesClick: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsState()
@@ -67,7 +67,7 @@ fun NewsFeedScreen(
 private fun NewsFeedContent(
     state: NewsFeedState,
     onRefresh: () -> Unit,
-    onNewsClick: (Long) -> Unit,
+    onNewsClick: (String) -> Unit,
     onFavoriteClick: (NewsItem) -> Unit,
     onCategorySelect: (String) -> Unit = {},
     onFavoritesClick: () -> Unit = {}
@@ -169,7 +169,7 @@ private fun CategoryChip(
 @Composable
 private fun NewsList(
     news: ImmutableList<NewsItem>,
-    onNewsClick: (Long) -> Unit,
+    onNewsClick: (String) -> Unit,
     onFavoriteClick: (NewsItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -185,11 +185,11 @@ private fun NewsList(
     ) {
         items(
             items = news,
-            key = { it.id }
+            key = { it.url }
         ) { item ->
             NewsCardCell(
                 newsItem = item,
-                onClick = { onNewsClick(item.id) },
+                onClick = { onNewsClick(item.url) },
                 onFavoriteClick = { onFavoriteClick(item) },
                 isFavorite = item.isFavorite,
                 modifier = Modifier.fillMaxWidth()

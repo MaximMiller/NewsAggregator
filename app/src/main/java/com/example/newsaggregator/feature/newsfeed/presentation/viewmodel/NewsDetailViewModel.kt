@@ -18,24 +18,23 @@ class NewsDetailViewModel @Inject constructor(
     private val _state = MutableStateFlow(NewsDetailState())
     val state: StateFlow<NewsDetailState> = _state.asStateFlow()
 
-    fun loadNewsDetail(newsId: Long) {
+    fun loadNewsDetail(newsUrl: String) {
         _state.value = _state.value.copy(isLoading = true)
         viewModelScope.launch {
-            getNewsDetailUseCase(newsId)
+            getNewsDetailUseCase(newsUrl)
                 .onSuccess { newsItem ->
                     _state.value = _state.value.copy(
-                        isLoading = false,
                         newsItem = newsItem,
+                        isLoading = false,
                         error = null
                     )
                 }
                 .onFailure { error ->
                     _state.value = _state.value.copy(
                         isLoading = false,
-                        error = error.message ?: "Ошибка загрузки"
+                        error = error.message
                     )
                 }
         }
     }
 }
-

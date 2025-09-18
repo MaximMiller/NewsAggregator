@@ -16,49 +16,39 @@ class FavoritesManager @Inject constructor(
 ) {
     private val _favoritesUpdates = MutableSharedFlow<Unit>()
     val favoritesUpdates: SharedFlow<Unit> = _favoritesUpdates.asSharedFlow()
-    private val _favoriteStates = mutableMapOf<Long, Boolean>()
+    private val _favoriteStates = mutableMapOf<String, Boolean>()
 
-    suspend fun getFavoriteState(newsId: Long): Boolean {
-        return _favoriteStates[newsId] ?: isFavoriteCheckAction(newsId).also {
-            _favoriteStates[newsId] = it
+    suspend fun getFavoriteState(newsUrl: String): Boolean {
+        return _favoriteStates[newsUrl] ?: isFavoriteCheckAction(newsUrl).also {
+            _favoriteStates[newsUrl] = it
         }
     }
 
     suspend fun toggleFavorite(item: NewsItem) {
-        val stableId = item.getStableId()
-        val currentState = getFavoriteState(stableId)
+        val newsUrl = item.url
+        val currentState = getFavoriteState(newsUrl)
         val newFavoriteState = !currentState
 
-        _favoriteStates[stableId] = newFavoriteState
+        _favoriteStates[newsUrl] = newFavoriteState
 
         if (newFavoriteState) {
             saveAction(item)
         } else {
-            removeAction(stableId)
+            removeAction(newsUrl)
         }
-        notifyFavoritesChanged()
-    }
-
-    suspend fun removeFromFavorites(newsId: Long) {
-        _favoriteStates[newsId] = false
-        removeAction(newsId)
         notifyFavoritesChanged()
     }
 
     suspend fun setFavoriteState(item: NewsItem, isFavorite: Boolean) {
-        val stableId = item.getStableId()
-        _favoriteStates[stableId] = isFavorite
+        val newsUrl = item.url
+        _favoriteStates[newsUrl] = isFavorite
 
         if (isFavorite) {
             saveAction(item)
         } else {
-            removeAction(stableId)
+            removeAction(newsUrl)
         }
         notifyFavoritesChanged()
-    }
-
-    fun clearCache() {
-        _favoriteStates.clear()
     }
 
     private suspend fun notifyFavoritesChanged() {

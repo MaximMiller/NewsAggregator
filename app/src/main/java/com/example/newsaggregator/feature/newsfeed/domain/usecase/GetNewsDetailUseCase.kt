@@ -7,9 +7,9 @@ import javax.inject.Inject
 class GetNewsDetailUseCase @Inject constructor(
     private val getCachedHeadlinesAction: GetCachedHeadlinesAction
 ) {
-    suspend operator fun invoke(newsId: Long): Result<NewsItem> = runCatching {
+    suspend operator fun invoke(newsUrl: String): Result<NewsItem> = runCatching {
         val allNews = getCachedHeadlinesAction()
-        allNews.firstOrNull { it.id == newsId }
+        allNews.firstOrNull { it.url == newsUrl }
             ?: throw NoSuchElementException("Новость не найдена в кеше")
     }
 }

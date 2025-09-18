@@ -18,7 +18,6 @@ class NewsMapper @Inject constructor(
         searchQuery: String? = null,
         category: String? = null,
     ): NewsEntity = NewsEntity(
-        id = generateStableId(dto.url),
         url = dto.url,
         title = dto.title,
         description = dto.description ?: "",
@@ -28,7 +27,7 @@ class NewsMapper @Inject constructor(
         urlToImage = dto.urlToImage,
         publishedAt = dto.publishedAt ?: "",
         content = dto.content,
-        isFavorite = isFavoriteCheckAction(generateStableId(dto.url)),
+        isFavorite = isFavoriteCheckAction(dto.url),
         feedType = feedType,
         page = page ?: 1,
         searchQuery = searchQuery,
@@ -36,10 +35,9 @@ class NewsMapper @Inject constructor(
     )
 
     fun entityToDomain(entity: NewsEntity): NewsItem = NewsItem(
-        id = entity.id,
+        url = entity.url,
         title = entity.title,
         description = entity.description.takeIf { it.isNotEmpty() },
-        url = entity.url,
         imageUrl = entity.urlToImage,
         publishedAt = entity.publishedAt,
         source = entity.sourceName,
@@ -56,7 +54,6 @@ class NewsMapper @Inject constructor(
         searchQuery: String? = null,
         category: String? = null,
     ): NewsEntity = NewsEntity(
-        id = domain.id,
         url = domain.url,
         title = domain.title,
         description = domain.description ?: "",
@@ -72,8 +69,4 @@ class NewsMapper @Inject constructor(
         searchQuery = searchQuery,
         category = category,
     )
-
-    private fun generateStableId(url: String): Long {
-        return url.hashCode().toLong()
-    }
 }

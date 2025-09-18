@@ -23,11 +23,11 @@ interface NewsDao {
     @Query("SELECT * FROM news WHERE category = :category AND feed_type = 'CATEGORY'")
     suspend fun getNewsByCategory(category: String): List<NewsEntity>
 
-    @Query("SELECT * FROM news WHERE url = :id")
-    suspend fun getNewsById(id: Long): NewsEntity?
+    @Query("SELECT * FROM news WHERE url = :url")
+    suspend fun getNewsByUrl(url: String): NewsEntity?
 
-    @Query("UPDATE news SET is_favorite = :isFavorite WHERE id = :newsId")
-    suspend fun updateFavoriteStatus(newsId: Long, isFavorite: Boolean)
+    @Query("UPDATE news SET is_favorite = :isFavorite WHERE url = :newsUrl")
+    suspend fun updateFavoriteStatus(newsUrl: String, isFavorite: Boolean)
 
     @Query("SELECT * FROM news WHERE is_favorite = 1 ORDER BY published_at DESC")
     suspend fun getFavoriteNews(): List<NewsEntity>

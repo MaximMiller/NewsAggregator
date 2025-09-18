@@ -16,15 +16,14 @@ interface FavoritesDao {
     @Query("""
         SELECT news.* 
         FROM news 
-        INNER JOIN favorites ON news.id = favorites.news_id
+        INNER JOIN favorites ON news.url = favorites.news_url
         ORDER BY favorites.saved_at DESC
     """)
     fun getFavoritesWithNews(): Flow<List<NewsEntity>>
 
-    @Query("DELETE FROM favorites WHERE news_id= :newsId")
-    suspend fun removeFavorite(newsId: Long)
+    @Query("DELETE FROM favorites WHERE news_url = :newsUrl")
+    suspend fun removeFavorite(newsUrl: String)
 
-    @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE news_id = :newsId LIMIT 1)")
-    suspend fun isNewsFavorite(newsId: Long): Boolean
-
+    @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE news_url = :newsUrl LIMIT 1)")
+    suspend fun isNewsFavorite(newsUrl: String): Boolean
 }
